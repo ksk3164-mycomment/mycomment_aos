@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorLightGrey">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="2dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_actorTalk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/list_item_talk_comment_ActorTalk"
+                android:paddingTop="3dp"
+                android:paddingHorizontal="8dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/jalnan"
+                android:visibility="visible"
+                android:background="@drawable/bg_actor_talk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profileLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_actorTalk">
+
+                <ImageView
+                    android:id="@+id/profileView"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="16dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_drama_thumbnail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/nameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="6dp"
+                    android:gravity="center|left"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="name"
+                    android:textColor="@color/colorTextContent"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/profileView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/aliasLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center|left"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/nameLabel"
+                    app:layout_constraintLeft_toRightOf="@+id/nameLabel"
+                    app:layout_constraintTop_toTopOf="@+id/nameLabel" />
+
+                <LinearLayout
+                    android:id="@+id/replyLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/replyView"
+                        android:layout_width="54dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/bg_reply"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/list_item_talk_comment_Reply"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/likeBackgroundView"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_like_box">
+
+                        <TextView
+                            android:id="@+id/likeCountLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="4dp"
+                            android:layout_toStartOf="@id/likeView"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/colorTextContent"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/likeView"
+                            android:layout_width="18dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/bubble_white" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/contentLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="16dp"
+                android:lineSpacingMultiplier="1.1"
+                android:text="content"
+                android:textColor="@color/colorTextContent"
+                android:textIsSelectable="true"
+                android:longClickable="true"
+                android:clickable="true"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileLayout"
+                android:focusable="true" />
+
+
+            <LinearLayout
+                android:id="@+id/optionWrapperView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="9dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contentLabel">
+
+                <TextView
+                    android:id="@+id/timelineLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="시간"
+                    android:textColor="@color/colorTextTimestamp"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/deleteView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="@string/Delete"
+                    android:textColor="@color/colorTextTimestamp"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/reportView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="@string/Report"
+                    android:textColor="@color/colorTextTimestamp"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/blockView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="@string/Block"
+                    android:textColor="@color/colorTextTimestamp"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

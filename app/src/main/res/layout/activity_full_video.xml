@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:controller_layout_id="@layout/custom_controlview_full"
+        app:fastforward_increment="10000"
+        app:rewind_increment="10000"
+        app:show_buffering="always"
+        app:show_timeout="3000" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_volume"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_speaker"
+            android:layout_width="8dp"
+            android:layout_height="6dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="36dp"
+            android:src="@drawable/ic_speaker"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/volume_control"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="100"
+            android:layout_marginTop="130dp"
+            android:progressBackgroundTint="@color/white"
+            android:rotation="270"
+            android:thumb="@android:color/transparent"
+            android:translationX="-110dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_speaker" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

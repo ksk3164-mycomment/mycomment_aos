@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.splash.SplashFragment"
+        android:label="">
+        <action
+            android:id="@+id/action_splashFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_talkFragment"
+            app:destination="@id/talkFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.signs.SignInFragment"
+        android:label=""
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_termFragment"
+            app:destination="@id/termFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signInFragment_to_signStep1Fragment"
+            app:destination="@id/signStep1Fragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@+id/signInFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.bookmark.BookmarkFragment"
+        tools:layout="@layout/fragment_bookmark" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/organizationFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.organization.OrganizationFragment"
+        tools:layout="@layout/fragment_organization" />
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.language.LanguageFragment"
+        tools:layout="@layout/fragment_language" />
+    <fragment
+        android:id="@+id/dramaFeedModifyFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedModifyFragment"
+        tools:layout="@layout/fragment_drama_feed_modify" />
+    <action
+        android:id="@+id/action_global_bookmarkFragment"
+        app:destination="@id/bookmarkFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_splashFragment"
+        app:destination="@id/splashFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_in" />
+    <fragment
+        android:id="@+id/termFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.general.TermFragment"
+        tools:layout="@layout/fragment_term">
+        <argument
+            android:name="category"
+            android:defaultValue="guide"
+            app:argType="kr.beimsupicures.mycomment.api.models.TermModel$Category" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_termFragment"
+        app:destination="@id/termFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/talkFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.talk.TalkFragment"
+        tools:layout="@layout/fragment_talk">
+        <action
+            android:id="@+id/action_talkFragment_to_searchTalkFragment"
+            app:destination="@id/searchTalkFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_talkFragment_to_bookMarkFragment"
+            app:destination="@+id/bookmarkFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_talkFragment_to_organizationFragment"
+            app:destination="@+id/organizationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="talk"
+            app:argType="kr.beimsupicures.mycomment.api.models.TalkModel[]"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchTalkFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.search.SearchTalkFragment"
+        tools:layout="@layout/fragment_search_talk" />
+    <fragment
+        android:id="@+id/talkDetailFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.talk.TalkDetailFragment"
+        android:label="TalkDetailFragment"
+        tools:layout="@layout/fragment_talk_detail">
+        <argument
+            android:name="talk"
+            app:argType="kr.beimsupicures.mycomment.api.models.TalkModel" />
+        <argument
+            android:name="selectedCommentId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_talkDetailFragment_to_dramaFeedDetailFragment"
+            app:destination="@id/dramaFeedDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/RealTimeTalkFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.talk.RealTimeTalkFragment"
+        android:label="RealTimeTalkFragment"
+        tools:layout="@layout/fragment_real_time_talk">
+        <argument
+            android:name="talk"
+            app:argType="kr.beimsupicures.mycomment.api.models.TalkModel"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_talkDetailFragment"
+        app:destination="@id/talkDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/signStep1Fragment"
+        android:name="kr.beimsupicures.mycomment.controllers.signs.SignStep1Fragment"
+        tools:layout="@layout/fragment_sign_step1">
+        <argument
+            android:name="viewmodel"
+            app:argType="kr.beimsupicures.mycomment.viewmodels.signs.SignStep1ViewModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/agreeDialog"
+        android:name="kr.beimsupicures.mycomment.components.dialogs.AgreeDialog"
+        tools:layout="@layout/dialog_agree" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.detail.webview.WebViewFragment"
+        android:label="WebViewFragment"
+        tools:layout="@layout/fragment_webview">
+        <argument
+            android:name="talk"
+            app:argType="kr.beimsupicures.mycomment.api.models.TalkModel"
+            app:nullable="true" />
+        <argument
+            android:name="watch"
+            app:argType="kr.beimsupicures.mycomment.api.models.WatchModel"
+            app:nullable="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_webViewFragment"
+        app:destination="@id/webViewFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/dramaFeedFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drama_feed">
+        <argument
+            android:name="feedmodel"
+            app:argType="kr.beimsupicures.mycomment.api.models.FeedModel"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_dramaFeedFragment_to_dramaFeedDetailFragment"
+            app:destination="@id/dramaFeedDetailFragment" />
+        <action
+            android:id="@+id/action_dramaFeedFragment_to_dramaFeedWriteFragment"
+            app:destination="@id/dramaFeedWriteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dramaFeedWriteFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedWriteFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drama_feed_write">
+        <action
+            android:id="@+id/action_dramaFeedWriteFragment_to_dramaFeedFragment"
+            app:destination="@id/dramaFeedFragment" />
+        <action
+            android:id="@+id/action_dramaFeedWriteFragment_to_dramaFeedDetailFragment"
+            app:destination="@id/dramaFeedDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dramaFeedDetailFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedDetailFragment"
+        android:label="DramaFeedDetailFragment"
+        tools:layout="@layout/fragment_feed_detail_talk">
+        <argument
+            android:name="feed_seq"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="selectedCommentId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/originalFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.original.OriginalFragment"
+        tools:layout="@layout/fragment_original" />
+    <fragment
+        android:id="@+id/originalDetailFragment"
+        android:name="kr.beimsupicures.mycomment.controllers.main.original.OriginalDetailFragment"
+        tools:layout="@layout/fragment_original_detail">
+        <argument
+            android:name="viewmodel"
+            app:argType="kr.beimsupicures.mycomment.api.models.OriginalModel"
+            app:nullable="true" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_dramaFeedWriteFragment"
+        app:destination="@id/dramaFeedWriteFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_dramaFeedDetailFragment"
+        app:destination="@id/dramaFeedDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_organizationFragment"
+        app:destination="@id/organizationFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_languageFragment"
+        app:destination="@id/languageFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_global_dramaFeedModifyFragment"
+        app:destination="@id/dramaFeedModifyFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_originalFragment"
+        app:destination="@id/originalFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_talkFragment"
+        app:destination="@id/talkFragment"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left" />
+    <action
+        android:id="@+id/action_global_talkFragment2"
+        app:destination="@id/talkFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_in" />
+    <action
+        android:id="@+id/action_global_originalDetailFragment"
+        app:destination="@id/originalDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+</navigation>

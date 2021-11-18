@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.kakao.sdk:v2-user:2.5.2@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/92b0997f202cf9b1c45e91da78b34020/jetified-v2-user-2.5.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b62bda957ab186474fcb460fd5b1eb45/jetified-v2-user-2.5.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/610d8cc08a5df8382b0a2ec2d029ffc0/jetified-v2-user-2.5.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/610d8cc08a5df8382b0a2ec2d029ffc0/jetified-v2-user-2.5.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/610d8cc08a5df8382b0a2ec2d029ffc0/jetified-v2-user-2.5.2/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kakao.sdk/v2-user/2.5.2/cef6f9b31bc78e7c1a93bf78d19d9529a6b4515f/v2-user-2.5.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

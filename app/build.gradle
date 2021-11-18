@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+    defaultConfig {
+        applicationId "kr.beimsupicures.mycomment"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 42
+        versionName "1.8.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-invites:17.0.0'
+    def nav_version = "2.3.5"
+    def fragment_version = "1.3.0-alpha08"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "androidx.core:core-ktx:1.6.0"
+
+    // 프래그먼트 1.3.0
+    implementation "androidx.fragment:fragment:1.3.6"
+    // 코틀린용 프래그먼트 1.3.0
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
+
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // RecyclerView
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    // CardView
+    implementation "androidx.cardview:cardview:$version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.5'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // ImagePicker
+    implementation 'gun0912.ted:tedimagepicker:1.1.1'
+
+    // Amazon S3
+    implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.13.5'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.13.5'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database:ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+
+    // Carousel
+    implementation 'com.github.IslamKhSh:CardSlider:1.0.1'
+
+    // Rx
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0'
+
+    // Picker
+    compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
+
+    // AVLoadingIndicatorView
+    compile ('com.wang.avi:library:2.1.3')
+
+    // Kakao
+//    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+    implementation "com.kakao.sdk:v2-user:2.5.2" // 카카오 로그인
+
+    // Google
+//    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Facebook
+//    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+    implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
+
+    // Lottie
+    implementation 'com.airbnb.android:lottie:3.4.1'
+
+    //viewpager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    //Tablayout
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
+
+    //editor
+    implementation 'jp.wasabeef:richeditor-android:2.0.0'
+
+    //exoplayer
+    def exoplayer_version = '2.13.3'
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
+
+}
