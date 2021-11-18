@@ -20,6 +20,10 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -169,18 +173,29 @@ class ProfileFragment : BaseFragment() {
             optionWrapperView = view.findViewById(R.id.optionWrapperView)
             btnSignOut = view.findViewById(R.id.btnSignOut)
             btnSignOut.setOnClickListener { view ->
-                activity?.let{
-                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestIdToken(getString(R.string.default_web_client_id))
-                            .requestEmail()
-                            .build()
-                        val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+                activity?.let {
 
-                        mGoogleSignInClient.signOut().addOnCompleteListener {
-                            Log.e("tjdrnr", "로그아웃성공")
-                        }
+                    GraphRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        "/me/permissions/",
+                        null,
+                        HttpMethod.DELETE
+                    ) {
+                        Log.e("tjdrnr", "facebook logout")
+                        LoginManager.getInstance().logOut()
+                    }.executeAsync()
 
-                        // 로그아웃
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build()
+                    val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener {
+                        Log.e("tjdrnr", "로그아웃성공")
+                    }
+
+                    // 로그아웃
 //                    UserApiClient.instance.logout { error ->
 //                        if (error != null) {
 //                            Log.e("TAG", "로그아웃 실패. SDK에서 토큰 삭제됨", error)
@@ -190,9 +205,9 @@ class ProfileFragment : BaseFragment() {
 //                        }
 //                    }
 
-                        UserLoader.shared.signout()
-                        BaseApplication.shared.getSharedPreferences().reset()
-                        view.findNavController().navigate(R.id.action_global_splashFragment)
+                    UserLoader.shared.signout()
+                    BaseApplication.shared.getSharedPreferences().reset()
+                    view.findNavController().navigate(R.id.action_global_splashFragment)
 
                 }
             }
@@ -258,8 +273,8 @@ class ProfileFragment : BaseFragment() {
             tvLanguage = view.findViewById(R.id.tv_language)
             var language = BaseApplication.shared.getSharedPreferences().getLocale()
 
-            if (language==null){
-            val text = activity?.baseContext?.let { getSystemLanguage(it) }
+            if (language == null) {
+                val text = activity?.baseContext?.let { getSystemLanguage(it) }
 
                 if (text != null) {
                     setLocate(text)
@@ -268,9 +283,9 @@ class ProfileFragment : BaseFragment() {
 
             }
 
-            when(language){
-                "en"->tvLanguage.text = "English"
-                "ko"->  tvLanguage.text = "한국어"
+            when (language) {
+                "en" -> tvLanguage.text = "English"
+                "ko" -> tvLanguage.text = "한국어"
                 else -> tvLanguage.text = "English"
             }
         }
@@ -356,6 +371,7 @@ class ProfileFragment : BaseFragment() {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
+
     private fun getSystemLanguage(context: Context): String {
         val systemLocale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales.get(0)
@@ -364,6 +380,7 @@ class ProfileFragment : BaseFragment() {
         }
         return systemLocale.language
     }
+
     //Locale 객체를 생성특정 지리적, 정치적 또는 문화적 영역을 나타냅니다.
     private fun setLocate(Lang: String) {
         val locale = Locale(Lang) // Local 객체 생성. 인자로는 해당 언어의 축약어가 들어가게 됩니다. (ex. ko, en)

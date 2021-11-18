@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.facebook.*
+import com.facebook.FacebookSdk.getApplicationContext
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -40,21 +42,20 @@ class SignInFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_sign_in, container, false)
     }
 
-    override fun loadModel() {
-        super.loadModel()
-
-    }
-
     override fun loadUI() {
         super.loadUI()
 
         view?.let { view ->
 
+            FacebookSdk.sdkInitialize(getApplicationContext())
             callbackManager = CallbackManager.Factory.create()
             LoginManager.getInstance().registerCallback(callbackManager, object :
                 FacebookCallback<LoginResult?> {
                 override fun onSuccess(loginResult: LoginResult?) {
-                    Log.e("TAG", "${loginResult?.accessToken} ${loginResult?.accessToken?.userId}")
+                    Log.e(
+                        "TAG",
+                        "facebook Login = ${loginResult?.accessToken} ${loginResult?.accessToken?.userId}"
+                    )
                     getUserProfile(loginResult?.accessToken, loginResult?.accessToken?.userId)
                 }
 
@@ -238,35 +239,46 @@ class SignInFragment : BaseFragment() {
             "fields",
             "id, first_name, middle_name, last_name, name, picture, email"
         )
-        GraphRequest(token,
+        GraphRequest(
+            token,
             "/$userId/",
             parameters,
-            HttpMethod.GET,
-            GraphRequest.Callback { response ->
-                val jsonObject = response.jsonObject
+            HttpMethod.GET
+        ) { response ->
+            val jsonObject = response.jsonObject
 
-                // Facebook Access Token
-                // You can see Access Token only in Debug mode.
-                // You can't see it in Logcat using Log.d, Facebook did that to avoid leaking user's access token.
-                if (BuildConfig.DEBUG) {
-                    FacebookSdk.setIsDebugEnabled(true)
-                    FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
-                }
+            // Facebook Access Token
+            // You can see Access Token only in Debug mode.
+            // You can't see it in Logcat using Log.d, Facebook did that to avoid leaking user's access token.
 
-                jsonObject.getString("email")?.let { email ->
-                    jsonObject.getString("name")?.let { nickname ->
+            if (BuildConfig.DEBUG) {
+                FacebookSdk.setIsDebugEnabled(true)
+                FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
+            }
 
-                        sign(email, nickname, UserModel.SocialProvider.facebook)
-                    }
-                }
+            //facebook login email 없을때
+            if (jsonObject.has("email")) {
+                sign(
+                    jsonObject.getString("email"),
+                    jsonObject.getString("name"),
+                    UserModel.SocialProvider.facebook
+                )
+            } else {
+                sign(
+                    "$userId@facebook.com",
+                    jsonObject.getString("name"),
+                    UserModel.SocialProvider.facebook
+                )
+            }
 
-            }).executeAsync()
+        }.executeAsync()
     }
 }
 
 fun SignInFragment.sign(email: String, nickname: String, type: UserModel.SocialProvider) {
     // 닉네임 중복 확인
-    Log.e("TAG", "${email}, ${nickname}, ${type}")
+    Log.e("tjdrnr", "${email}, ${nickname}, ${type}")
+
     UserLoader.shared.uniqueEmail(email) { result ->
         when (result) {
             true -> {
