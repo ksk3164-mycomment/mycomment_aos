@@ -28,15 +28,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/list_item_talk_comment_ActorTalk"
-                android:paddingTop="3dp"
-                android:paddingHorizontal="8dp"
+                android:background="@drawable/bg_actor_talk"
+                android:fontFamily="@font/jalnan"
                 android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="3dp"
+                android:text="@string/list_item_talk_comment_ActorTalk"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:fontFamily="@font/jalnan"
                 android:visibility="visible"
-                android:background="@drawable/bg_actor_talk"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -147,16 +147,13 @@
                 android:layout_marginTop="9dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingMultiplier="1.1"
-                android:text="content"
+                android:text=""
                 android:textColor="@color/colorTextContent"
                 android:textIsSelectable="true"
-                android:longClickable="true"
-                android:clickable="true"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profileLayout"
-                android:focusable="true" />
+                app:layout_constraintTop_toBottomOf="@+id/profileLayout" />
 
 
             <LinearLayout
@@ -175,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingMultiplier="1.1"
-                    android:text="시간"
+                    android:text=""
                     android:textColor="@color/colorTextTimestamp"
                     android:textSize="12sp" />
 

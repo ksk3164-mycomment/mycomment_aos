@@ -168,10 +168,10 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                app:tabIndicatorColor="@color/black"
                 app:tabSelectedTextColor="@android:color/black"
-                app:tabTextColor="@color/colorTextTimestamp"
-                app:tabIndicatorColor="@color/black" />
+                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                app:tabTextColor="@color/colorTextTimestamp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

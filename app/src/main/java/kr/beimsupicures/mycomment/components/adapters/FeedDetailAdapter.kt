@@ -50,6 +50,12 @@ class FeedDetailAdapter(
         )
     }
 
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.contentLabel.isEnabled = false
+        holder.itemView.contentLabel.isEnabled = true
+    }
+
     override fun getItemCount(): Int {
         return items.count()
     }
@@ -57,7 +63,7 @@ class FeedDetailAdapter(
     override fun onBindViewHolder(holder: FeedDetailAdapter.ViewHolder, position: Int) {
         when (holder) {
             is FeedDetailAdapter.ViewHolder4 -> {
-                holder.bind(items[holder.adapterPosition], holder.adapterPosition)
+                holder.bind(items[holder.bindingAdapterPosition], holder.bindingAdapterPosition)
             }
         }
     }
@@ -185,24 +191,24 @@ class FeedDetailAdapter(
                     isLoad[position] = true
                     when (viewModel.pick) {
                         true -> {
-                            var newValue = items[adapterPosition]
+                            var newValue = items[bindingAdapterPosition]
                             newValue.pick = false
-                            items[adapterPosition] = newValue
+                            items[bindingAdapterPosition] = newValue
 
                             PickLoader.shared.unpick(
                                 category = PickModel.Category.fcomment,
                                 category_id = viewModel.id
                             ) { pickModel ->
-                                var newValue = items[adapterPosition]
+                                var newValue = items[bindingAdapterPosition]
                                 newValue.pick = pickModel.pick()
                                 newValue.pick_count = newValue.pick_count - 1
-                                items[adapterPosition] = newValue
+                                items[bindingAdapterPosition] = newValue
 
                                 val comment = this@FeedDetailAdapter.items
                                 FeedCommentLoader.shared.items = comment.toMutableList()
 
                                 isLoad[position] = false
-                                notifyItemChanged(adapterPosition)
+                                notifyItemChanged(bindingAdapterPosition)
 
                                 FirebaseDatabase.getInstance().getReference("feed")
                                     .child("${feed.feed_seq}").child("like")
@@ -211,9 +217,9 @@ class FeedDetailAdapter(
                         }
 
                         else -> {
-                            var newValue = items[adapterPosition]
+                            var newValue = items[bindingAdapterPosition]
                             newValue.pick = true
-                            items[adapterPosition] = newValue
+                            items[bindingAdapterPosition] = newValue
 
 
                             PickLoader.shared.pick(
@@ -221,15 +227,15 @@ class FeedDetailAdapter(
                                 category_owner_id = viewModel.user_id,
                                 category_id = viewModel.id
                             ) { pickModel ->
-                                var newValue = items[adapterPosition]
+                                var newValue = items[bindingAdapterPosition]
                                 newValue.pick = pickModel.pick()
                                 newValue.pick_count = newValue.pick_count + 1
-                                items[adapterPosition] = newValue
+                                items[bindingAdapterPosition] = newValue
 
                                 val comment = this@FeedDetailAdapter.items
                                 CommentLoader.shared.items = comment.toMutableList()
 
-                                isLoad[adapterPosition] = false
+                                isLoad[bindingAdapterPosition] = false
                                 notifyDataSetChanged()
 
                                 FirebaseDatabase.getInstance().getReference("feed")
@@ -241,14 +247,22 @@ class FeedDetailAdapter(
 
                 } ?: run {
                     activity?.let { activity ->
-                        activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
                             Navigation.findNavController(activity, R.id.nav_host_fragment)
                                 .navigate(R.id.action_global_signInFragment)
                         }
                     }
                 }
             }
+            contentLabel.setTextIsSelectable(false)
+            contentLabel.measure(-1, -1)
+            contentLabel.setTextIsSelectable(true)
             contentLabel.text = viewModel.content
+
+
             timelineLabel.text = "${viewModel.created_at.timeline(itemView.context)}"
             reportView.setOnClickListener { view ->
                 activity?.supportFragmentManager?.let { fragmentManager ->
@@ -259,7 +273,10 @@ class FeedDetailAdapter(
                             viewModel.id,
                             reason
                         ) {
-                            activity.alert(activity.getString(R.string.report_complete_sub), activity.getString(R.string.report_complete)) { }
+                            activity.alert(
+                                activity.getString(R.string.report_complete_sub),
+                                activity.getString(R.string.report_complete)
+                            ) { }
                         }
                     }).show(fragmentManager, "")
                 }
@@ -267,7 +284,10 @@ class FeedDetailAdapter(
             blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
             blockView.setOnClickListener { view ->
                 activity?.let { activity ->
-                    activity.popup(activity.getString(R.string.Block_alert), activity.getString(R.string.Block_Comment)) {
+                    activity.popup(
+                        activity.getString(R.string.Block_alert),
+                        activity.getString(R.string.Block_Comment)
+                    ) {
                         items.removeAt(position)
                         notifyDataSetChanged()
                     }
@@ -276,7 +296,10 @@ class FeedDetailAdapter(
 
             deleteView.setOnClickListener { view ->
                 activity?.let { activity ->
-                    activity.popup(activity.getString(R.string.Delete_comment_sub), activity.getString(R.string.Delete_comment)) {
+                    activity.popup(
+                        activity.getString(R.string.Delete_comment_sub),
+                        activity.getString(R.string.Delete_comment)
+                    ) {
                         FeedCommentLoader.shared.deleteFeedComment(viewModel.id) { comment ->
 
                         }
@@ -293,12 +316,15 @@ class FeedDetailAdapter(
                             })
                             onclickInterface.onClick(count)
 
-                            activity.alert(activity.getString(R.string.Delete_alert), activity.getString(R.string.Notification)) {
+                            activity.alert(
+                                activity.getString(R.string.Delete_alert),
+                                activity.getString(R.string.Notification)
+                            ) {
 
                             }
 
-                            items.removeAt(adapterPosition)
-                            notifyItemRemoved(adapterPosition)
+                            items.removeAt(bindingAdapterPosition)
+                            notifyItemRemoved(bindingAdapterPosition)
 
                             val newValue = this@FeedDetailAdapter.items
                             FeedCommentLoader.shared.items = newValue
@@ -317,7 +343,10 @@ class FeedDetailAdapter(
                     onReplied(replyMessage)
                 } ?: run {
                     activity?.let { activity ->
-                        activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
                             Navigation.findNavController(activity, R.id.nav_host_fragment)
                                 .navigate(R.id.action_global_signInFragment)
                         }

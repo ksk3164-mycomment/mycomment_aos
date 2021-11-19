@@ -33,6 +33,7 @@ import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.dialogs.BubbleUserListDialog
 import kr.beimsupicures.mycomment.components.dialogs.ReportDialog
 import kr.beimsupicures.mycomment.extensions.*
+import java.lang.Exception
 
 class TalkDetailAdapter(
     val activity: FragmentActivity?,
@@ -53,6 +54,14 @@ class TalkDetailAdapter(
         )
     }
 
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        holder.itemView.contentLabel.isEnabled = false
+        holder.itemView.contentLabel.isEnabled = true
+
+    }
+
     override fun getItemCount(): Int {
         return items.count()
     }
@@ -60,7 +69,7 @@ class TalkDetailAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder4 -> {
-                holder.bind(items[holder.adapterPosition], holder.adapterPosition)
+                holder.bind(items[holder.bindingAdapterPosition], holder.bindingAdapterPosition)
             }
         }
     }
@@ -180,32 +189,32 @@ class TalkDetailAdapter(
                     return@setOnClickListener
                 }
 
-                isLoad[adapterPosition]?.let { isLoad ->
+                isLoad[bindingAdapterPosition]?.let { isLoad ->
                     if (isLoad) return@setOnClickListener
                 }
 
                 BaseApplication.shared.getSharedPreferences().getUser()?.let {
-                    isLoad[adapterPosition] = true
+                    isLoad[bindingAdapterPosition] = true
                     when (viewModel.pick) {
                         true -> {
-                            var newValue = items[adapterPosition]
+                            val newValue = items[bindingAdapterPosition]
                             newValue.pick = false
-                            items[adapterPosition] = newValue
+                            items[bindingAdapterPosition] = newValue
 
                             PickLoader.shared.unpick(
                                 category = PickModel.Category.comment,
                                 category_id = viewModel.id
                             ) { pickModel ->
-                                var newValue = items[adapterPosition]
+                                var newValue = items[bindingAdapterPosition]
                                 newValue.pick = pickModel.pick()
                                 newValue.pick_count = newValue.pick_count - 1
-                                items[adapterPosition] = newValue
+                                items[bindingAdapterPosition] = newValue
 
                                 val comment = this@TalkDetailAdapter.items
                                 CommentLoader.shared.items = comment.toMutableList()
 
-                                isLoad[adapterPosition] = false
-                                notifyItemChanged(adapterPosition)
+                                isLoad[bindingAdapterPosition] = false
+                                notifyItemChanged(bindingAdapterPosition)
 
                                 FirebaseDatabase.getInstance().getReference("talk")
                                     .child("${talk.id}").child("like")
@@ -216,9 +225,9 @@ class TalkDetailAdapter(
                         else -> {
 
 //                            notifyDataSetChanged()
-                            var newValue = items[adapterPosition]
+                            var newValue = items[bindingAdapterPosition]
                             newValue.pick = true
-                            items[adapterPosition] = newValue
+                            items[bindingAdapterPosition] = newValue
 
 
                             PickLoader.shared.pick(
@@ -226,17 +235,17 @@ class TalkDetailAdapter(
                                 category_owner_id = viewModel.user_id,
                                 category_id = viewModel.id
                             ) { pickModel ->
-                                var newValue = items[adapterPosition]
+                                var newValue = items[bindingAdapterPosition]
                                 newValue.pick = pickModel.pick()
                                 newValue.pick_count = newValue.pick_count + 1
-                                items[adapterPosition] = newValue
+                                items[bindingAdapterPosition] = newValue
 
                                 val comment = this@TalkDetailAdapter.items
                                 CommentLoader.shared.items = comment.toMutableList()
 
-                                isLoad[adapterPosition] = false
+                                isLoad[bindingAdapterPosition] = false
 //                                notifyDataSetChanged()
-                                notifyItemChanged(adapterPosition)
+                                notifyItemChanged(bindingAdapterPosition)
 
                                 FirebaseDatabase.getInstance().getReference("talk")
                                     .child("${talk.id}").child("like")
@@ -247,14 +256,19 @@ class TalkDetailAdapter(
 
                 } ?: run {
                     activity?.let { activity ->
-                        activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
                             Navigation.findNavController(activity, R.id.nav_host_fragment)
                                 .navigate(R.id.action_global_signInFragment)
                         }
                     }
                 }
             }
+
             contentLabel.text = viewModel.content
+
 
 //            contentLabel.setOnClickListener {
 //                val clipboardManager = activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -272,7 +286,10 @@ class TalkDetailAdapter(
                             viewModel.id,
                             reason
                         ) {
-                            activity.alert(activity.getString(R.string.report_complete_sub), activity.getString(R.string.report_complete)) { }
+                            activity.alert(
+                                activity.getString(R.string.report_complete_sub),
+                                activity.getString(R.string.report_complete)
+                            ) { }
                         }
                     }).show(fragmentManager, "")
                 }
@@ -280,16 +297,22 @@ class TalkDetailAdapter(
 
             blockView.setOnClickListener { view ->
                 activity?.let { activity ->
-                    activity.popup(activity.getString(R.string.Block_alert), activity.getString(R.string.Block_Comment)) {
-                        items.removeAt(adapterPosition)
-                        notifyItemRemoved(adapterPosition)
+                    activity.popup(
+                        activity.getString(R.string.Block_alert),
+                        activity.getString(R.string.Block_Comment)
+                    ) {
+                        items.removeAt(bindingAdapterPosition)
+                        notifyItemRemoved(bindingAdapterPosition)
                     }
                 }
             }
 
             deleteView.setOnClickListener { view ->
                 activity?.let { activity ->
-                    activity.popup(activity.getString(R.string.Delete_comment_sub), activity.getString(R.string.Delete_comment)) {
+                    activity.popup(
+                        activity.getString(R.string.Delete_comment_sub),
+                        activity.getString(R.string.Delete_comment)
+                    ) {
                         CommentLoader.shared.deleteComment(viewModel.id) { comment ->
 //                            CommentLoader.shared.getCommentCountTotal(viewModel.id) { total ->
                             CommentLoader.shared.getCommentCount(talk.id) { count ->
@@ -306,11 +329,14 @@ class TalkDetailAdapter(
                                 listOnclickInterface.onCheckBox(count)
 
 
-                                activity.alert(activity.getString(R.string.Delete_alert), activity.getString(R.string.Notification)) {
+                                activity.alert(
+                                    activity.getString(R.string.Delete_alert),
+                                    activity.getString(R.string.Notification)
+                                ) {
 
                                 }
-                                items.removeAt(adapterPosition)
-                                notifyItemRemoved(adapterPosition)
+                                items.removeAt(bindingAdapterPosition)
+                                notifyItemRemoved(bindingAdapterPosition)
 
                                 val newValue = this@TalkDetailAdapter.items
                                 CommentLoader.shared.items = newValue
@@ -332,7 +358,10 @@ class TalkDetailAdapter(
 
                 } ?: run {
                     activity?.let { activity ->
-                        activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
                             Navigation.findNavController(activity, R.id.nav_host_fragment)
                                 .navigate(R.id.action_global_signInFragment)
                         }

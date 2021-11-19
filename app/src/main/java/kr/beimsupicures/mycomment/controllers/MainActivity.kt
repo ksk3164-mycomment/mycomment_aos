@@ -1100,7 +1100,7 @@ class MainActivity : BaseActivity() {
                         }
 
                 } catch (e: ApiException) {
-                    Log.e("TAG", "Google sign in failed", e)
+                    Log.e("TAG", "Google sign in failed+$e")
                 }
             }
         }
