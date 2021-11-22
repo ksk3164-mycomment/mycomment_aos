@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -30,14 +31,13 @@ import gun0912.tedimagepicker.builder.TedImagePicker
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.AmazonS3Loader
+import kr.beimsupicures.mycomment.api.loaders.ReportLoader
 import kr.beimsupicures.mycomment.api.loaders.UserLoader
-import kr.beimsupicures.mycomment.api.models.TermModel
-import kr.beimsupicures.mycomment.api.models.UserModel
-import kr.beimsupicures.mycomment.api.models.isMe
-import kr.beimsupicures.mycomment.api.models.nameOnly
+import kr.beimsupicures.mycomment.api.models.*
 import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.dialogs.IntroDialog
 import kr.beimsupicures.mycomment.components.dialogs.NicknameDialog
+import kr.beimsupicures.mycomment.components.dialogs.ReportDialog
 import kr.beimsupicures.mycomment.components.fragments.BaseFragment
 import kr.beimsupicures.mycomment.components.fragments.startLoadingUI
 import kr.beimsupicures.mycomment.components.fragments.stopLoadingUI
@@ -77,6 +77,9 @@ class ProfileFragment : BaseFragment() {
 
     lateinit var tvLanguageSetting: TextView
     lateinit var tvLanguage: TextView
+
+    lateinit var reportWrapperView: LinearLayout
+    lateinit var tvReport: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -283,6 +286,34 @@ class ProfileFragment : BaseFragment() {
 
             }
 
+            reportWrapperView = view.findViewById(R.id.reportWrapperView)
+            tvReport = view.findViewById(R.id.tv_report)
+
+            reportWrapperView.setOnClickListener {
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    fragmentManager?.let { it1 ->
+                        ReportDialog(view.context, didSelectAt = { reason ->
+                            activity?.let {
+                                it.alert(
+                                    it.getString(R.string.report_complete_sub),
+                                    it.getString(R.string.report_complete)
+                                ) { }
+                            }
+                        }).show(it1, "")
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
+                        }
+                    }
+                }
+            }
+
             when (language) {
                 "en" -> tvLanguage.text = "English"
                 "ko" -> tvLanguage.text = "한국어"
@@ -347,11 +378,13 @@ class ProfileFragment : BaseFragment() {
                     optionWrapperView.visibility = View.GONE
                     tvAlarmSetting.visibility = View.GONE
                     languageSetting.visibility = View.GONE
+                    reportWrapperView.visibility = View.VISIBLE
                 }
 
                 true -> {
                     btnProfile.visibility = View.VISIBLE
                     btnProfileBackground.visibility = View.VISIBLE
+                    reportWrapperView.visibility = View.GONE
                 }
             }
         }
