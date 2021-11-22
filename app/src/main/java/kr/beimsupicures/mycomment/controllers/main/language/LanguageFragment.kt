@@ -1,35 +1,16 @@
 package kr.beimsupicures.mycomment.controllers.main.language
 
-import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kr.beimsupicures.mycomment.R
-import kr.beimsupicures.mycomment.api.loaders.SearchLoader
-import kr.beimsupicures.mycomment.api.models.TalkModel
-import kr.beimsupicures.mycomment.components.adapters.TalkTodayAdapter
 import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.fragments.BaseFragment
-import kr.beimsupicures.mycomment.components.fragments.startLoadingUI
-import kr.beimsupicures.mycomment.components.fragments.stopLoadingUI
-import kr.beimsupicures.mycomment.controllers.MainActivity
 import kr.beimsupicures.mycomment.extensions.*
-import java.util.*
-import kotlin.system.exitProcess
 
 
 class LanguageFragment : BaseFragment() {
@@ -59,12 +40,10 @@ class LanguageFragment : BaseFragment() {
 
             // 저장된 언어 코드를 불러온다.
             var language = BaseApplication.shared.getSharedPreferences().getLocale()
-            val text = activity?.baseContext?.let { getSystemLanguage(it) }
+            val text = requireContext().getSystemLanguage()
 
-            if (text != null) {
-                setLocate(text)
-                language = BaseApplication.shared.getSharedPreferences().getLocale()
-            }
+            requireContext().setLocate(text)
+            language = BaseApplication.shared.getSharedPreferences().getLocale()
 
 
 
@@ -89,7 +68,7 @@ class LanguageFragment : BaseFragment() {
             constraintLayoutEN.setOnClickListener {
                 if (languageTF) {
                     activity?.popup("", getString(R.string.language_popup_title)) {
-                        setLocate("en")
+                        requireContext().setLocate("en")
                         languageTF = false
                         view.findNavController().navigate(R.id.action_global_splashFragment)
 
@@ -103,7 +82,7 @@ class LanguageFragment : BaseFragment() {
             constraintLayoutKO.setOnClickListener {
                 if (!languageTF) {
                     activity?.popup("", getString(R.string.language_popup_title)) {
-                        setLocate("ko")
+                        requireContext().setLocate("ko")
                         languageTF = true
                         view.findNavController().navigate(R.id.action_global_splashFragment)
 
@@ -118,30 +97,4 @@ class LanguageFragment : BaseFragment() {
         }
     }
 
-    private fun getSystemLanguage(context: Context): String {
-        val systemLocale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales.get(0)
-        } else {
-            context.resources.configuration.locale
-        }
-        return systemLocale.language
-    }
-
-    //Locale 객체를 생성특정 지리적, 정치적 또는 문화적 영역을 나타냅니다.
-    private fun setLocate(Lang: String) {
-        val locale = Locale(Lang) // Local 객체 생성. 인자로는 해당 언어의 축약어가 들어가게 됩니다. (ex. ko, en)
-        Locale.setDefault(locale) // 생성한 Locale로 설정을 해줍니다.
-
-        val config = Configuration() //이 클래스는 응용 프로그램이 검색하는 리소스에 영향을 줄 수 있는
-        // 모든 장치 구성 정보를 설명합니다.
-
-        config.setLocale(locale) // 현재 유저가 선호하는 언어를 환경 설정으로 맞춰 줍니다.
-        requireContext().resources?.updateConfiguration(
-            config,
-            requireContext().resources?.displayMetrics
-        )
-
-        // Shared에 현재 언어 상태를 저장해 줍니다.
-        BaseApplication.shared.getSharedPreferences().setLocale(Lang)
-    }
 }

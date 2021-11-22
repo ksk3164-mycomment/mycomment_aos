@@ -2,10 +2,8 @@ package kr.beimsupicures.mycomment.controllers
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -23,7 +21,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
@@ -115,14 +112,14 @@ class MainActivity : BaseActivity() {
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val langauge = BaseApplication.shared.getSharedPreferences().getLocale()
-        Log.e("tjdrnr", "language = " +langauge)
+        Log.e("tjdrnr", "language = " + langauge)
 
-        val text = getSystemLanguage(this)
+        val text = this.getSystemLanguage()
 
-        when(langauge){
+        when (langauge) {
             null -> setLocate(text)
-            "en"->setLocate("en")
-            "ko"->setLocate("ko")
+            "en" -> setLocate("en")
+            "ko" -> setLocate("ko")
         }
 
         window?.decorView?.systemUiVisibility =
@@ -132,8 +129,7 @@ class MainActivity : BaseActivity() {
 
         val connection = NetworkConnection(applicationContext)
         connection.observe(this, Observer { isConnected ->
-            if (!isConnected)
-            {
+            if (!isConnected) {
                 Toast.makeText(
                     BaseApplication.shared.context(),
                     getString(R.string.network_not_connected),
@@ -216,9 +212,12 @@ class MainActivity : BaseActivity() {
                         (arguments.get("category") as? TermModel.Category)?.let { category ->
 
                             when (category) {
-                                TermModel.Category.guide -> title = getString(R.string.profile_comunity)
-                                TermModel.Category.service -> title = getString(R.string.profile_term)
-                                TermModel.Category.privacy -> title = getString(R.string.profile_policy)
+                                TermModel.Category.guide -> title =
+                                    getString(R.string.profile_comunity)
+                                TermModel.Category.service -> title =
+                                    getString(R.string.profile_term)
+                                TermModel.Category.privacy -> title =
+                                    getString(R.string.profile_policy)
                             }
                             toolbar.titleLabel.text = title
                         }
@@ -524,7 +523,10 @@ class MainActivity : BaseActivity() {
                             alert(getString(R.string.feed_write_content_blank), "") { }
                         } else {
                             //제목입력, 내용입력
-                            popup(getString(R.string.feed_write_alert_sub), getString(R.string.feed_write_alert_title)) {
+                            popup(
+                                getString(R.string.feed_write_alert_sub),
+                                getString(R.string.feed_write_alert_title)
+                            ) {
                                 BaseApplication.shared.getSharedPreferences().getPostTalkId()
                                     ?.let { talk_id ->
                                         var editor = fragment.editorText.toString()
@@ -765,7 +767,10 @@ class MainActivity : BaseActivity() {
                                                 }
                                             } else {
                                                 //이미지 개수 9장 이상일때
-                                                alert(getString(R.string.feed_write_photo_alert), getString(R.string.Notification)) {}
+                                                alert(
+                                                    getString(R.string.feed_write_photo_alert),
+                                                    getString(R.string.Notification)
+                                                ) {}
                                             }
                                         }
                                     }
@@ -793,7 +798,10 @@ class MainActivity : BaseActivity() {
                         alert(getString(R.string.feed_write_content_blank), "") { }
                     } else {
                         //제목입력, 내용입력
-                        popup(getString(R.string.feed_write_alert_sub), getString(R.string.feed_edit_title)) {
+                        popup(
+                            getString(R.string.feed_write_alert_sub),
+                            getString(R.string.feed_edit_title)
+                        ) {
                             val editor = fragment.editorText.toString()
                             val title = fragment.title.text.toString()
 
@@ -902,7 +910,10 @@ class MainActivity : BaseActivity() {
                                     }
                                 } else {
                                     //9장 이상
-                                    alert(getString(R.string.feed_write_photo_alert), getString(R.string.Notification)) {}
+                                    alert(
+                                        getString(R.string.feed_write_photo_alert),
+                                        getString(R.string.Notification)
+                                    ) {}
                                 }
                             }
                         }
@@ -1045,14 +1056,21 @@ class MainActivity : BaseActivity() {
                 R.id.splashFragment, R.id.talkFragment -> {
                     if (System.currentTimeMillis() - mBackWait >= 2000) {
                         mBackWait = System.currentTimeMillis()
-                        Toast.makeText(this, getString(R.string.backpress_title), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            getString(R.string.backpress_title),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         moveTaskToBack(true)
                         finishAffinity()
                     }
                 }
                 R.id.dramaFeedWriteFragment, R.id.dramaFeedModifyFragment -> {
-                    popup(getString(R.string.feed_write_cancel_sub), getString(R.string.feed_write_cancel_title)) {
+                    popup(
+                        getString(R.string.feed_write_cancel_sub),
+                        getString(R.string.feed_write_cancel_title)
+                    ) {
                         super.onBackPressed()
                     }
                 }
@@ -1222,30 +1240,5 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         BaseApplication.shared.getSharedPreferences().edit().putBoolean("noticeTF", false).apply()
-    }
-
-    //Locale 객체를 생성특정 지리적, 정치적 또는 문화적 영역을 나타냅니다.
-    private fun setLocate(Lang: String) {
-        val locale = Locale(Lang) // Local 객체 생성. 인자로는 해당 언어의 축약어가 들어가게 됩니다. (ex. ko, en)
-        Locale.setDefault(locale) // 생성한 Locale로 설정을 해줍니다.
-
-        val config = Configuration() //이 클래스는 응용 프로그램이 검색하는 리소스에 영향을 줄 수 있는
-        // 모든 장치 구성 정보를 설명합니다.
-        config.setLocale(locale) // 현재 유저가 선호하는 언어를 환경 설정으로 맞춰 줍니다.
-        baseContext.resources?.updateConfiguration(
-            config,
-            baseContext.resources?.displayMetrics
-        )
-        // Shared에 현재 언어 상태를 저장해 줍니다.
-        BaseApplication.shared.getSharedPreferences().setLocale(Lang)
-    }
-
-    private fun getSystemLanguage(context: Context): String {
-        val systemLocale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales.get(0)
-        } else {
-            context.resources.configuration.locale
-        }
-        return systemLocale.language
     }
 }

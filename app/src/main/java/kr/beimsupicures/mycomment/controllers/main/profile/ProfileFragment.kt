@@ -1,10 +1,7 @@
 package kr.beimsupicures.mycomment.controllers.main.profile
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.SpannableString
@@ -31,9 +28,11 @@ import gun0912.tedimagepicker.builder.TedImagePicker
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.AmazonS3Loader
-import kr.beimsupicures.mycomment.api.loaders.ReportLoader
 import kr.beimsupicures.mycomment.api.loaders.UserLoader
-import kr.beimsupicures.mycomment.api.models.*
+import kr.beimsupicures.mycomment.api.models.TermModel
+import kr.beimsupicures.mycomment.api.models.UserModel
+import kr.beimsupicures.mycomment.api.models.isMe
+import kr.beimsupicures.mycomment.api.models.nameOnly
 import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.dialogs.IntroDialog
 import kr.beimsupicures.mycomment.components.dialogs.NicknameDialog
@@ -42,7 +41,6 @@ import kr.beimsupicures.mycomment.components.fragments.BaseFragment
 import kr.beimsupicures.mycomment.components.fragments.startLoadingUI
 import kr.beimsupicures.mycomment.components.fragments.stopLoadingUI
 import kr.beimsupicures.mycomment.extensions.*
-import java.util.*
 
 
 class ProfileFragment : BaseFragment() {
@@ -277,10 +275,10 @@ class ProfileFragment : BaseFragment() {
             var language = BaseApplication.shared.getSharedPreferences().getLocale()
 
             if (language == null) {
-                val text = activity?.baseContext?.let { getSystemLanguage(it) }
+                val text = activity?.baseContext?.let { requireContext().getSystemLanguage() }
 
                 if (text != null) {
-                    setLocate(text)
+                    requireContext().setLocate(text)
                     language = BaseApplication.shared.getSharedPreferences().getLocale()
                 }
 
@@ -401,32 +399,8 @@ class ProfileFragment : BaseFragment() {
             Uri.parse("package:" + context?.packageName)
         )
         intent.addCategory(Intent.CATEGORY_DEFAULT)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
-    private fun getSystemLanguage(context: Context): String {
-        val systemLocale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales.get(0)
-        } else {
-            context.resources.configuration.locale
-        }
-        return systemLocale.language
-    }
-
-    //Locale 객체를 생성특정 지리적, 정치적 또는 문화적 영역을 나타냅니다.
-    private fun setLocate(Lang: String) {
-        val locale = Locale(Lang) // Local 객체 생성. 인자로는 해당 언어의 축약어가 들어가게 됩니다. (ex. ko, en)
-        Locale.setDefault(locale) // 생성한 Locale로 설정을 해줍니다.
-
-        val config = Configuration() //이 클래스는 응용 프로그램이 검색하는 리소스에 영향을 줄 수 있는
-        // 모든 장치 구성 정보를 설명합니다.
-        config.setLocale(locale) // 현재 유저가 선호하는 언어를 환경 설정으로 맞춰 줍니다.
-        requireContext().resources?.updateConfiguration(
-            config,
-            requireActivity().resources?.displayMetrics
-        )
-        // Shared에 현재 언어 상태를 저장해 줍니다.
-        BaseApplication.shared.getSharedPreferences().setLocale(Lang)
-    }
 }
