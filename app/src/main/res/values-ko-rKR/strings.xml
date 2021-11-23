@@ -127,4 +127,6 @@
     <string name="backpress_title">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
     <string name="network_not_connected">네트워크에 연결되어 있지 않습니다.</string>
     <string name="Report_feed">신고하기</string>
+    <string name="fragment_detail_overview">줄거리</string>
+    <string name="fragment_detail_cast">출연/제작</string>
 </resources>

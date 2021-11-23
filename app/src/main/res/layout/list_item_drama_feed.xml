@@ -52,7 +52,7 @@
             android:paddingTop="8dp"
             android:paddingEnd="12dp"
             android:text="게시글 제목 길이는 최대 두줄까지. 그 이상은 중략."
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"

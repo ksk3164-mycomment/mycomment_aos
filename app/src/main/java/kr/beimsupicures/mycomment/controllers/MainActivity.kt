@@ -618,8 +618,8 @@ class MainActivity : BaseActivity() {
                                                 )
                                                 Log.e("tjdrnr", "urlList= " + urlList)
 
-                                                loadingDialog = LoadingDialog()
-                                                loadingDialog.show(supportFragmentManager, "")
+                                                loadingDialog = LoadingDialog(this)
+                                                loadingDialog.show()
                                                 for (item in urlList.indices) {
                                                     AmazonS3Loader.shared.uploadImage3(
                                                         "feed",
@@ -869,8 +869,8 @@ class MainActivity : BaseActivity() {
                                     )
                                     Log.e("tjdrnr", "filelst= " + fileList)
 
-                                    loadingDialog = LoadingDialog()
-                                    loadingDialog.show(supportFragmentManager, "")
+                                    loadingDialog = LoadingDialog(this)
+                                    loadingDialog.show()
                                     for (item in subparts.indices) {
                                         AmazonS3Loader.shared.uploadImage3(
                                             "feed",
@@ -942,8 +942,8 @@ class MainActivity : BaseActivity() {
         toolbar.ivShare.setOnClickListener {
             BaseApplication.shared.getSharedPreferences().getUser()?.let { user ->
                 (supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.firstOrNull() as DramaFeedDetailFragment).let { fragment ->
-                    loadingDialog = LoadingDialog()
-                    loadingDialog.show(supportFragmentManager, "")
+                    loadingDialog = LoadingDialog(this)
+                    loadingDialog.show()
                     val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                         .setLink("https://mycomment.kr/feed/?seq=${fragment.feedDetail?.feed_seq}".toUri()) //정보를 담는 json 사이트를 넣자!!
                         .setDomainUriPrefix("https://mycomment.page.link/")

@@ -1,6 +1,7 @@
 package kr.beimsupicures.mycomment.controllers.signs
 
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -21,7 +23,6 @@ import kr.beimsupicures.mycomment.components.fragments.BaseFragment
 import kr.beimsupicures.mycomment.extensions.afterTextChanged
 import kr.beimsupicures.mycomment.extensions.alert
 import kr.beimsupicures.mycomment.viewmodels.signs.SignStep1ViewModel
-import stfalcon.universalpickerdialog.UniversalPickerDialog
 import java.util.*
 
 class SignStep1Fragment : BaseFragment() {
@@ -113,17 +114,24 @@ class SignStep1Fragment : BaseFragment() {
                 }
 
             }
-            val gender = arrayListOf(getString(R.string.male), getString(R.string.female))
+            val gender: Array<String> =
+                arrayOf(getString(R.string.male), getString(R.string.female))
             genderField = view.findViewById(R.id.genderField)
             genderField.setOnClickListener {
-                UniversalPickerDialog.Builder(context)
-                    .setTitle("")
-                    .setListener { selectedValues, key ->
-                        genderField.text = "${gender[selectedValues[0]]}"
-//                        validateUI()
-                    }
-                    .setInputs(UniversalPickerDialog.Input(0, gender))
-                    .show()
+//                UniversalPickerDialog.Builder(context)
+//                    .setTitle("")
+//                    .setListener { selectedValues, key ->
+//                        genderField.text = "${gender[selectedValues[0]]}"
+////                        validateUI()
+//                    }
+//                    .setInputs(UniversalPickerDialog.Input(0, gender))
+//                    .show()
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(R.string.fragment_sign_step_genderField)
+                    .setItems(gender, DialogInterface.OnClickListener { dialog, which ->
+                        genderField.text = "${gender[which]}"
+                    })
+                builder.create().show()
 
             }
             btnNext = view.findViewById(R.id.btnNext)
@@ -134,11 +142,11 @@ class SignStep1Fragment : BaseFragment() {
 
 //                if (!genderString.isNullOrBlank() && !birthString.isNullOrBlank()) {
 
-                    if (validation) {
-                        showAgreeView()
-                    } else {
-                        checkIfValidateNickname()
-                    }
+                if (validation) {
+                    showAgreeView()
+                } else {
+                    checkIfValidateNickname()
+                }
 //                } else {
 //
 //                }

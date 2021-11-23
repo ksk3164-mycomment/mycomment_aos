@@ -135,4 +135,6 @@
     <string name="backpress_title">If you click the back button one more time, it\'ll end</string>
     <string name="network_not_connected">Not connected to the network.</string>
     <string name="Report_feed">Report</string>
+    <string name="fragment_detail_overview">Overview</string>
+    <string name="fragment_detail_cast">Cast/Crew</string>
 </resources>

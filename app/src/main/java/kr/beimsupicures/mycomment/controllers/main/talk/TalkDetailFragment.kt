@@ -13,13 +13,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -34,10 +35,14 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.loaders.PickLoader
+import kr.beimsupicures.mycomment.api.loaders.TMDBLoader
 import kr.beimsupicures.mycomment.api.loaders.UserLoader
 import kr.beimsupicures.mycomment.api.models.*
 import kr.beimsupicures.mycomment.common.isPushEnabledAtOSLevel
 import kr.beimsupicures.mycomment.common.keyboard.showKeyboard
+import kr.beimsupicures.mycomment.components.adapters.LikeUserAdapter
+import kr.beimsupicures.mycomment.components.adapters.TalkDetailCastAdapter
+import kr.beimsupicures.mycomment.components.adapters.TalkTodayAdapter
 import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.dialogs.WaterDropDialog
 import kr.beimsupicures.mycomment.components.fragments.BaseFragment
@@ -50,9 +55,18 @@ import kr.beimsupicures.mycomment.extensions.*
 class TalkDetailFragment : BaseFragment() {
 
     var talk: TalkModel? = null
+
+    val apikey = "eb080e3becc91a626f6028a8129993c9"
     lateinit var ivContentImage: ImageView
     lateinit var titleLabel: TextView
     lateinit var contentLabel: TextView
+
+    lateinit var tvOverviewContent: TextView
+    lateinit var constraintOverview: ConstraintLayout
+    lateinit var rvCast: RecyclerView
+    lateinit var talkDetailCastAdapter: TalkDetailCastAdapter
+    var cast: MutableList<TMDBCastModel> = mutableListOf()
+
     lateinit var bookmarkView: ImageView
     lateinit var ivShare: ImageView
     lateinit var ivNetflix: ImageView
@@ -75,8 +89,6 @@ class TalkDetailFragment : BaseFragment() {
             messageField.text.isEmpty() -> false
             else -> true
         }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -121,7 +133,6 @@ class TalkDetailFragment : BaseFragment() {
 
         view?.let { view ->
 
-
             ivContentImage = view.findViewById(R.id.ivContentImage)
 
             ivNetflix = view.findViewById(R.id.ivNetflix)
@@ -131,6 +142,10 @@ class TalkDetailFragment : BaseFragment() {
 
             titleLabel = view.findViewById(R.id.titleLabel)
             contentLabel = view.findViewById(R.id.contentLabel)
+
+            tvOverviewContent = view.findViewById(R.id.tv_overview_content)
+            constraintOverview = view.findViewById(R.id.constraint_overview)
+
             bookmarkView = view.findViewById(R.id.bookmarkView)
             ivShare = view.findViewById(R.id.ivShare)
 
@@ -139,6 +154,14 @@ class TalkDetailFragment : BaseFragment() {
 
             tabLayouts = view.findViewById(R.id.tabLayout)
             viewPager = view.findViewById(R.id.viewPager2)
+
+            rvCast = view.findViewById(R.id.rv_cast)
+            talkDetailCastAdapter = TalkDetailCastAdapter(activity, cast)
+
+            rvCast.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rvCast.adapter = talkDetailCastAdapter
+
             talk?.let { values ->
 
                 realTimeTalkFragment = RealTimeTalkFragment(talk!!)
@@ -181,7 +204,10 @@ class TalkDetailFragment : BaseFragment() {
                         view.findNavController().navigate(action)
                     } ?: run {
                         activity?.let { activity ->
-                            activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                            activity.popup(
+                                activity.getString(R.string.Doyouwantlogin),
+                                activity.getString(R.string.Login)
+                            ) {
                                 Navigation.findNavController(activity, R.id.nav_host_fragment)
                                     .navigate(R.id.action_global_signInFragment)
                             }
@@ -232,7 +258,10 @@ class TalkDetailFragment : BaseFragment() {
                     } ?: run {
 
                         activity?.let { activity ->
-                            activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                            activity.popup(
+                                activity.getString(R.string.Doyouwantlogin),
+                                activity.getString(R.string.Login)
+                            ) {
                                 Navigation.findNavController(activity, R.id.nav_host_fragment)
                                     .navigate(R.id.action_global_signInFragment)
                             }
@@ -351,7 +380,10 @@ class TalkDetailFragment : BaseFragment() {
 
                     } ?: run {
                         activity?.let { activity ->
-                            activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                            activity.popup(
+                                activity.getString(R.string.Doyouwantlogin),
+                                activity.getString(R.string.Login)
+                            ) {
                                 Navigation.findNavController(activity, R.id.nav_host_fragment)
                                     .navigate(R.id.action_global_signInFragment)
                             }
@@ -416,7 +448,10 @@ class TalkDetailFragment : BaseFragment() {
                             }
                     } ?: run {
                         activity?.let { activity ->
-                            activity.popup(activity.getString(R.string.Doyouwantlogin), activity.getString(R.string.Login)) {
+                            activity.popup(
+                                activity.getString(R.string.Doyouwantlogin),
+                                activity.getString(R.string.Login)
+                            ) {
                                 Navigation.findNavController(activity, R.id.nav_host_fragment)
                                     .navigate(R.id.action_global_signInFragment)
                             }
@@ -436,9 +471,62 @@ class TalkDetailFragment : BaseFragment() {
             BaseApplication.shared.getSharedPreferences().setPostTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setTalk(talk)
 
+            when (BaseApplication.shared.getSharedPreferences().getLocale()) {
+                "en" -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
+                    if (tmdb.results?.size!! > 0) {
+
+                        TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
+
+                            tvOverviewContent.text = tmdb.results[0].overview
+
+                            this.cast = cast.cast!!.toMutableList()
+                            talkDetailCastAdapter.items = this.cast
+                            talkDetailCastAdapter.notifyDataSetChanged()
+                            rvCast.setHasFixedSize(true)
+
+                        }
+
+
+                    } else {
+                        constraintOverview.visibility = View.GONE
+                    }
+                }
+                "ko" -> TMDBLoader.shared.getSearch(apikey, "ko", talk.title) { tmdb ->
+                    if (tmdb.results?.size!! > 0) {
+
+                        TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "ko") { cast ->
+
+                            tvOverviewContent.text = tmdb.results[0].overview
+
+                            this.cast = cast.cast!!.toMutableList()
+                            talkDetailCastAdapter.items = this.cast
+                            talkDetailCastAdapter.notifyDataSetChanged()
+                            rvCast.setHasFixedSize(true)
+
+                        }
+                    } else {
+                        constraintOverview.visibility = View.GONE
+                    }
+                }
+                else -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
+                    if (tmdb.results?.size!! > 0) {
+
+                        TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
+
+                            tvOverviewContent.text = tmdb.results[0].overview
+
+                            this.cast = cast.cast!!.toMutableList()
+                            talkDetailCastAdapter.items = this.cast
+                            talkDetailCastAdapter.notifyDataSetChanged()
+                            rvCast.setHasFixedSize(true)
+
+                        }
+                    } else {
+                        constraintOverview.visibility = View.GONE
+                    }
+                }
+            }
         }
-
-
     }
 
     class CustomFragmentStateAdapter(

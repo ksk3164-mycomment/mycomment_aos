@@ -64,7 +64,7 @@
             android:text="@string/feed_view_latest"
             android:textStyle="bold"
             android:layout_marginEnd="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/colorTextTitle"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvOderbyViewcount"

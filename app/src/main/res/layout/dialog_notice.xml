@@ -35,14 +35,14 @@
             android:gravity="center"
             android:text="@string/dialog_notice_btnToday"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="15sp" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:background="@color/white" />
+            android:background="@color/colorWhite" />
 
         <TextView
             android:id="@+id/btnClose"
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:text="@string/Close"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

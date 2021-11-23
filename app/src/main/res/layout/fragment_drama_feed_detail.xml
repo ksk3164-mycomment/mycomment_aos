@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colorWhite">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -18,13 +18,13 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/colorWhite"
                 app:layout_scrollFlags="scroll">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +112,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:text=""
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorTextTitle"
                         android:textSize="17sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +142,7 @@
                     <!--                        android:text="1. 버릴 수 없는 지평, 도산의 마음\n(금전수/ 박찬호싸인야구공)\n\n지평 달미에 대한 마음 버리는 장치로 금전수 버리고-->
                     <!--달미 일부러 피했는데 경비아저씨가 다시 주워줌결국 3년동안 달미에 대한 마음 무럭무럭 키워놨고 ,다음회차 예고에 금전수 차에 태운 장면 나옴 (되돌려주는 걸로 예상)-->
                     <!--"-->
-                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textColor="@color/colorTextTitle"-->
                     <!--                        android:textSize="15sp"-->
                     <!--                        app:layout_constraintEnd_toEndOf="parent"-->
                     <!--                        app:layout_constraintStart_toStartOf="parent"-->

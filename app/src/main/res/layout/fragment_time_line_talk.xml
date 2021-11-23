@@ -10,7 +10,7 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/black"
+        android:background="@color/colorTextTitle"
         app:show_timeout="3000"
         app:rewind_increment="10000"
         app:fastforward_increment="10000"

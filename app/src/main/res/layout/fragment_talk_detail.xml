@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colorWhite">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -17,13 +17,13 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/colorWhite"
                 app:layout_scrollFlags="scroll">
 
                 <LinearLayout
@@ -111,7 +111,7 @@
                                 android:layout_marginEnd="50dp"
                                 android:gravity="center"
                                 android:text="JTBC | 16부작 | 최고 시청률 28.4%"
-                                android:textColor="@color/black"
+                                android:textColor="@color/colorTextTitle"
                                 android:textSize="13sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -160,6 +160,67 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraint_overview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/contentLayout">
+
+                        <TextView
+                            android:id="@+id/tv_overview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/fragment_detail_overview"
+                            android:textColor="@color/colorTextTitle"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_overview_content"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center_vertical"
+                            android:text="null"
+                            android:textColor="@color/colorTextTitle"
+                            android:textSize="13sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
+
+                        <TextView
+                            android:id="@+id/tv_cast"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/fragment_detail_cast"
+                            android:textColor="@color/colorTextTitle"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_overview_content" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_cast"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_cast" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -168,7 +229,7 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorColor="@color/colorTextTitle"
                 app:tabSelectedTextColor="@android:color/black"
                 app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                 app:tabTextColor="@color/colorTextTimestamp" />

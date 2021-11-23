@@ -44,7 +44,7 @@
             android:background="@color/colorSnsFacebook"
             android:gravity="center"
             android:text="@string/fragment_sign_in_btnFacebook"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
         <Space
@@ -58,7 +58,7 @@
             android:background="@color/colorSnsGoogle"
             android:gravity="center"
             android:text="@string/fragment_sign_in_btnGoogle"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
         <Space

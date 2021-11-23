@@ -18,7 +18,7 @@
         android:text="@string/Edit_feed"
         android:visibility="visible"
         android:paddingStart="16dp"
-        android:textColor="@color/black"
+        android:textColor="@color/colorTextTitle"
         android:textSize="17sp" />
 
     <View
@@ -63,7 +63,7 @@
         android:layout_height="80dp"
         android:gravity="center"
         android:textSize="16sp"
-        android:textColor="@color/black"
+        android:textColor="@color/colorTextTitle"
         android:text="@string/Cancel"/>
 
 

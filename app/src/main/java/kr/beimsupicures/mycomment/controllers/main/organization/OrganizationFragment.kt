@@ -1,6 +1,7 @@
 package kr.beimsupicures.mycomment.controllers.main.organization
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,44 +58,51 @@ class OrganizationFragment : BaseFragment() {
 
         view?.let { view ->
             startLoadingUI()
-            monAdapter = TalkTodayAdapter(activity, monTalk)
             rvMon = view.findViewById(R.id.rv_mon)
+            monAdapter = TalkTodayAdapter(activity, monTalk)
+            monAdapter.setHasStableIds(true)
             rvMon.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvMon.adapter = monAdapter
 
             rvTue = view.findViewById(R.id.rv_tue)
             tueAdapter = TalkTodayAdapter(activity, tueTalk)
+            tueAdapter.setHasStableIds(true)
             rvTue.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvTue.adapter = tueAdapter
 
             rvWed = view.findViewById(R.id.rv_wed)
             wedAdapter = TalkTodayAdapter(activity, wedTalk)
+            wedAdapter.setHasStableIds(true)
             rvWed.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvWed.adapter = wedAdapter
 
             rvThu = view.findViewById(R.id.rv_thu)
             thuAdapter = TalkTodayAdapter(activity, thuTalk)
+            thuAdapter.setHasStableIds(true)
             rvThu.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvThu.adapter = thuAdapter
 
             rvFri = view.findViewById(R.id.rv_fri)
             friAdapter = TalkTodayAdapter(activity, friTalk)
+            friAdapter.setHasStableIds(true)
             rvFri.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvFri.adapter = friAdapter
 
             rvSat = view.findViewById(R.id.rv_sat)
             satAdapter = TalkTodayAdapter(activity, satTalk)
+            satAdapter.setHasStableIds(true)
             rvSat.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvSat.adapter = satAdapter
 
             rvSun = view.findViewById(R.id.rv_sun)
             sunAdapter = TalkTodayAdapter(activity, sunTalk)
+            sunAdapter.setHasStableIds(true)
             rvSun.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvSun.adapter = sunAdapter
@@ -109,33 +117,44 @@ class OrganizationFragment : BaseFragment() {
 
             monTalk = talk.filter { it.live == 2 && it.open_day.contains("월") }.toMutableList()
             monAdapter.items = monTalk
-            monAdapter.notifyDataSetChanged()
+            rvMon.setHasFixedSize(true)
 
             tueTalk = talk.filter { it.live == 2 && it.open_day.contains("화") }.toMutableList()
             tueAdapter.items = tueTalk
-            tueAdapter.notifyDataSetChanged()
+            rvTue.setHasFixedSize(true)
 
             wedTalk = talk.filter { it.live == 2 && it.open_day.contains("수") }.toMutableList()
             wedAdapter.items = wedTalk
-            wedAdapter.notifyDataSetChanged()
+            rvWed.setHasFixedSize(true)
 
             thuTalk = talk.filter { it.live == 2 && it.open_day.contains("목") }.toMutableList()
             thuAdapter.items = thuTalk
-            thuAdapter.notifyDataSetChanged()
+            rvThu.setHasFixedSize(true)
 
             friTalk = talk.filter { it.live == 2 && it.open_day.contains("금") }.toMutableList()
             friAdapter.items = friTalk
-            friAdapter.notifyDataSetChanged()
+            rvFri.setHasFixedSize(true)
 
             satTalk = talk.filter { it.live == 2 && it.open_day.contains("토") }.toMutableList()
             satAdapter.items = satTalk
-            satAdapter.notifyDataSetChanged()
+            rvSat.setHasFixedSize(true)
 
             sunTalk = talk.filter { it.live == 2 && it.open_day.contains("일") }.toMutableList()
             sunAdapter.items = sunTalk
-            sunAdapter.notifyDataSetChanged()
+            rvSun.setHasFixedSize(true)
 
-            stopLoadingUI()
+            Handler().postDelayed({
+                monAdapter.notifyDataSetChanged()
+                tueAdapter.notifyDataSetChanged()
+                wedAdapter.notifyDataSetChanged()
+                thuAdapter.notifyDataSetChanged()
+                friAdapter.notifyDataSetChanged()
+                satAdapter.notifyDataSetChanged()
+                sunAdapter.notifyDataSetChanged()
+                stopLoadingUI()
+            }, 500)
+
+
         }
 
     }

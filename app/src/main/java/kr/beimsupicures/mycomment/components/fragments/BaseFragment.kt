@@ -47,14 +47,10 @@ abstract class BaseFragment : Fragment() {
 }
 
 fun BaseFragment.startLoadingUI() {
-    fragmentManager?.let { fragmentManager ->
-        view?.let { view ->
-
-            loadingDialog = LoadingDialog()
-            loadingDialog.show(fragmentManager, "")
-        }
-    }
+    loadingDialog = LoadingDialog(requireContext())
+    loadingDialog.show()
 }
+
 
 fun BaseFragment.stopLoadingUI() {
     loadingDialog.dismiss()
@@ -65,7 +61,10 @@ fun BaseFragment.signin(completionHandler: (Boolean) -> Unit) {
     UserLoader.shared.getUser { user ->
         if (user.banned_at != null) {
             activity?.let {
-                it.alert(it.getString(R.string.Basefragment_loginban), it.getString(R.string.Notification)) {
+                it.alert(
+                    it.getString(R.string.Basefragment_loginban),
+                    it.getString(R.string.Notification)
+                ) {
                     completionHandler(false)
                 }
             }
