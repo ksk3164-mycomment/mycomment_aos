@@ -112,12 +112,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0'
 
-    // Picker
-    compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
-
-    // AVLoadingIndicatorView
-    compile ('com.wang.avi:library:2.1.3')
-
     // Kakao
 //    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     implementation "com.kakao.sdk:v2-user:2.5.2" // 카카오 로그인

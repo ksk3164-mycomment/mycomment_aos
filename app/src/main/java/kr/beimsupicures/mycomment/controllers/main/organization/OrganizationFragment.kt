@@ -2,6 +2,7 @@ package kr.beimsupicures.mycomment.controllers.main.organization
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -143,7 +144,7 @@ class OrganizationFragment : BaseFragment() {
             sunAdapter.items = sunTalk
             rvSun.setHasFixedSize(true)
 
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 monAdapter.notifyDataSetChanged()
                 tueAdapter.notifyDataSetChanged()
                 wedAdapter.notifyDataSetChanged()

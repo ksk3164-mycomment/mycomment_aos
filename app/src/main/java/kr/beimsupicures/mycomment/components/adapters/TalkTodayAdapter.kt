@@ -140,7 +140,6 @@ class TalkTodayAdapter(val activity: FragmentActivity?, var items: MutableList<T
             Glide.with(itemView.context).load(viewModel.poster_image_url)
                 .placeholder(R.color.colorGrey)
                 .transform(CenterCrop(),RoundedCorners(30))
-                .thumbnail(0.5f)
                 .into(profileView)
             titleLabel.text = viewModel.title
             countLabel.text = viewModel.talk_count.toString()

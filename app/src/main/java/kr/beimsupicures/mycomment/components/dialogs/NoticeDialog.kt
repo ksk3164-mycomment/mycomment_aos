@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -38,7 +39,7 @@ class NoticeDialog(private val context: Context) {
     @SuppressLint("ClickableViewAccessibility")
     private val onTouchListener = View.OnTouchListener { _, motionEvent ->
         if (motionEvent.action == MotionEvent.ACTION_UP) {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 dismiss()
             }, 5)
         }

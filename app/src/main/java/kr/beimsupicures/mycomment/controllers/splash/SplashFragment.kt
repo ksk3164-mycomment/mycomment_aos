@@ -2,6 +2,7 @@ package kr.beimsupicures.mycomment.controllers.splash
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +41,7 @@ class SplashFragment : BaseFragment() {
                     true -> {
                         view?.let { view ->
 //                            SearchLoader.shared.searchTalk("") { talk ->
-                                Handler().postDelayed({
+                                Handler(Looper.getMainLooper()).postDelayed({
                                     val action =
                                         NavigationDirections.actionGlobalTalkFragment2(null)
                                     Navigation.findNavController(
@@ -58,7 +59,7 @@ class SplashFragment : BaseFragment() {
             view?.let { view ->
                 Log.e("tjdrnr", "로그인")
 //                SearchLoader.shared.searchTalk("") { talk ->
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         val action =
                             NavigationDirections.actionGlobalTalkFragment2(null)
                         Navigation.findNavController(

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -361,7 +362,7 @@ class TalkFragment : BaseFragment() {
 
 //        startLoadingUI()
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
 
             SearchLoader.shared.searchTalk("") { it ->
                 popular.clear()

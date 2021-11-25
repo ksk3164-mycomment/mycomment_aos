@@ -15,6 +15,7 @@ import android.net.UrlQuerySanitizer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -346,7 +347,7 @@ class MainActivity : BaseActivity() {
                     searchText.visibility = View.GONE
                     searchText.text = getString(R.string.activity_main_searchText)
                     searchField.visibility = View.VISIBLE
-                    searchField.setText("")
+                    searchField.hint = getString(R.string.activity_main_searchText)
                     toolbar.btnBack.visibility = View.GONE
                     toolbar.btnBookmark.visibility = View.GONE
                     toolbar.btnClose.visibility = View.GONE
@@ -737,7 +738,7 @@ class MainActivity : BaseActivity() {
                                                                             .setFeedId(
                                                                                 feedModel.feed_seq
                                                                             )
-                                                                        Handler().postDelayed({
+                                                                        Handler(Looper.getMainLooper()).postDelayed({
                                                                             Navigation.findNavController(
                                                                                 fragment.requireView()
                                                                             )
@@ -888,7 +889,7 @@ class MainActivity : BaseActivity() {
                                                     title,
                                                     parts.joinToString("")
                                                 ) {
-                                                    Handler().postDelayed({
+                                                    Handler(Looper.getMainLooper()).postDelayed({
                                                         Navigation.findNavController(
                                                             fragment.requireView()
                                                         )

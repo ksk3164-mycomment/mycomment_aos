@@ -3,6 +3,8 @@ package kr.beimsupicures.mycomment.controllers.main.talk
 import android.content.*
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -161,42 +163,7 @@ class TalkDetailFragment : BaseFragment() {
             rvCast.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvCast.adapter = talkDetailCastAdapter
-
             talk?.let { values ->
-
-                realTimeTalkFragment = RealTimeTalkFragment(talk!!)
-                dramaFeedFragment = DramaFeedFragment(talk!!)
-                timeLineTalkFragment = TimeLineTalkFragment()
-
-                RealTimeTalkFragment.newInstance(values)
-
-                viewPager.adapter = CustomFragmentStateAdapter(talk!!, this)
-
-                activity?.getString(R.string.realtimetalk)?.let { tabTextList.add(it) }
-                activity?.getString(R.string.DramaFeed)?.let { tabTextList.add(it) }
-
-                TabLayoutMediator(tabLayouts, viewPager) { tab, position ->
-                    tab.text = tabTextList[position]
-                }.attach()
-                viewPager.isUserInputEnabled = false
-
-                viewPager.apply {
-                    (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                }
-                viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        if (position == 0) {
-                            messageWrapperView.visibility = View.VISIBLE
-                            floatingButton.visibility = View.GONE
-                        } else {
-                            messageField.setText("")
-                            messageWrapperView.visibility = View.GONE
-                            floatingButton.visibility = View.VISIBLE
-                        }
-                    }
-
-                })
 
                 floatingButton.setOnClickListener {
                     BaseApplication.shared.getSharedPreferences().getUser()?.let {
@@ -236,9 +203,8 @@ class TalkDetailFragment : BaseFragment() {
                         }
                     }
                 })
+
                 btnSend = view.findViewById(R.id.btnSend)
-
-
                 btnSend.setOnClickListener {
 
                     BaseApplication.shared.getSharedPreferences().getUser()?.let {
@@ -267,8 +233,6 @@ class TalkDetailFragment : BaseFragment() {
                             }
                         }
                     }
-
-
                 }
 
                 Glide.with(this)
@@ -289,7 +253,6 @@ class TalkDetailFragment : BaseFragment() {
                 ivTving.isVisible = values.otts.contains("tving")
                 ivWave.isVisible = values.otts.contains("wavve")
                 ivWatcha.isVisible = values.otts.contains("watcha")
-
 
 //                bookmarkView.setImageDrawable(
 //                    ContextCompat.getDrawable(
@@ -466,66 +429,117 @@ class TalkDetailFragment : BaseFragment() {
         super.fetchModel()
 
         talk?.let { talk ->
+
+            startLoadingUI()
             BaseApplication.shared.getSharedPreferences().setTalkTime()
             BaseApplication.shared.getSharedPreferences().setCurrentTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setPostTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setTalk(talk)
 
             when (BaseApplication.shared.getSharedPreferences().getLocale()) {
+
                 "en" -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
-
+                            constraintOverview.visibility = View.VISIBLE
                             tvOverviewContent.text = tmdb.results[0].overview
 
-                            this.cast = cast.cast!!.toMutableList()
-                            talkDetailCastAdapter.items = this.cast
-                            talkDetailCastAdapter.notifyDataSetChanged()
-                            rvCast.setHasFixedSize(true)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                this.cast = cast.cast!!.toMutableList()
+                                talkDetailCastAdapter.items = this.cast
+                                talkDetailCastAdapter.notifyDataSetChanged()
+                                rvCast.setHasFixedSize(true)
+                                stopLoadingUI()
+                            }, 500)
 
                         }
-
-
                     } else {
                         constraintOverview.visibility = View.GONE
+                        stopLoadingUI()
                     }
                 }
                 "ko" -> TMDBLoader.shared.getSearch(apikey, "ko", talk.title) { tmdb ->
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "ko") { cast ->
-
+                            constraintOverview.visibility = View.VISIBLE
                             tvOverviewContent.text = tmdb.results[0].overview
 
-                            this.cast = cast.cast!!.toMutableList()
-                            talkDetailCastAdapter.items = this.cast
-                            talkDetailCastAdapter.notifyDataSetChanged()
-                            rvCast.setHasFixedSize(true)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                this.cast = cast.cast!!.toMutableList()
+                                talkDetailCastAdapter.items = this.cast
+                                talkDetailCastAdapter.notifyDataSetChanged()
+                                rvCast.setHasFixedSize(true)
+                                stopLoadingUI()
+                            }, 500)
 
                         }
                     } else {
                         constraintOverview.visibility = View.GONE
+                        stopLoadingUI()
                     }
                 }
                 else -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
-
+                            constraintOverview.visibility = View.VISIBLE
                             tvOverviewContent.text = tmdb.results[0].overview
 
-                            this.cast = cast.cast!!.toMutableList()
-                            talkDetailCastAdapter.items = this.cast
-                            talkDetailCastAdapter.notifyDataSetChanged()
-                            rvCast.setHasFixedSize(true)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                this.cast = cast.cast!!.toMutableList()
+                                talkDetailCastAdapter.items = this.cast
+                                talkDetailCastAdapter.notifyDataSetChanged()
+                                rvCast.setHasFixedSize(true)
+                                stopLoadingUI()
+                            }, 500)
 
                         }
                     } else {
                         constraintOverview.visibility = View.GONE
+                        stopLoadingUI()
                     }
+
                 }
             }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                realTimeTalkFragment = RealTimeTalkFragment(talk)
+                dramaFeedFragment = DramaFeedFragment(talk)
+                timeLineTalkFragment = TimeLineTalkFragment()
+
+                RealTimeTalkFragment.newInstance(talk)
+
+                viewPager.adapter = CustomFragmentStateAdapter(talk, this)
+
+                activity?.getString(R.string.realtimetalk)?.let { tabTextList.add(it) }
+                activity?.getString(R.string.DramaFeed)?.let { tabTextList.add(it) }
+
+                TabLayoutMediator(tabLayouts, viewPager) { tab, position ->
+                    tab.text = tabTextList[position]
+                }.attach()
+                viewPager.isUserInputEnabled = false
+
+                viewPager.apply {
+                    (getChildAt(0) as RecyclerView).overScrollMode =
+                        RecyclerView.OVER_SCROLL_NEVER
+                }
+                viewPager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        if (position == 0) {
+                            messageWrapperView.visibility = View.VISIBLE
+                            floatingButton.visibility = View.GONE
+                        } else {
+                            messageField.setText("")
+                            messageWrapperView.visibility = View.GONE
+                            floatingButton.visibility = View.VISIBLE
+                        }
+                    }
+                })
+            }, 500)
         }
     }
 

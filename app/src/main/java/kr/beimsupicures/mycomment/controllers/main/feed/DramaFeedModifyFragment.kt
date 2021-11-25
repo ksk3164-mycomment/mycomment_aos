@@ -81,7 +81,6 @@ class DramaFeedModifyFragment : BaseFragment() {
                 }
             }
 
-
             Log.e("tjdrnr", "TF = $editorEmpty")
             editor.setOnTextChangeListener { text -> // Do Something
                 Log.e("tjdrnr", "Editor = $text")
