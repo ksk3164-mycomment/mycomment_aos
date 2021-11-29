@@ -5,451 +5,603 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        android:overScrollMode="never">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/titleLabel"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:gravity="center_horizontal"-->
-            <!--                android:paddingBottom="24dp"-->
-            <!--                android:text="본방사수"-->
-            <!--                android:textColor="@color/colorTextTitle" />-->
-
-            <!--            <com.github.islamkhsh.CardSliderViewPager-->
-            <!--                android:id="@+id/noticeView"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="44dp"-->
-            <!--                android:background="#EFF6FA"-->
-            <!--                app:auto_slide_time="5"-->
-            <!--                app:cardSlider_baseShadow="0dp"-->
-            <!--                app:cardSlider_otherPagesWidth="0dp"-->
-            <!--                app:cardSlider_pageMargin="0dp"-->
-            <!--                app:cardSlider_smallScaleFactor="1.0" />-->
-
-            <com.github.islamkhsh.CardSliderViewPager
-                android:id="@+id/bannerView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:auto_slide_time="5"
-                app:cardSlider_baseShadow="0dp"
-                app:cardSlider_indicator="@id/bannerIndicator"
-                app:cardSlider_otherPagesWidth="12dp"
-                app:cardSlider_pageMargin="12dp"
-                app:cardSlider_smallScaleFactor="1.0" />
-
-            <com.github.islamkhsh.CardSliderIndicator
-                android:id="@+id/bannerIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
-                android:minHeight="10dp"
-                app:indicatorsToShow="10" />
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            android:overScrollMode="never">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bookmarkLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:visibility="gone">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/bookmarkTextLayout"
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_framelayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_bookmark_title"
-                        android:textColor="@color/colorTextTitle"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvBookMark"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_view_all"
-                        android:textColor="@color/colorTextSegment2"
-                        android:textSize="11sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBookMark"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:minHeight="185dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bookmarkTextLayout" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/popularLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="visible">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/popularTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_Popular_Drama"
-                        android:textColor="@color/colorTextTitle"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvPopular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_view_all"
-                        android:textColor="@color/colorTextSegment2"
-                        android:textSize="11sp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPopular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:minHeight="185dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/popularTextLayout" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/recommendLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="visible">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/recommendTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_TheActorWeLove"
-                        android:textColor="@color/colorTextTitle"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvRecommend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_view_all"
-                        android:textColor="@color/colorTextSegment2"
-                        android:textSize="11sp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecommend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="185dp"
-                    android:layout_marginTop="4dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recommendTextLayout" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_first_sympathy"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="12dp"
-                android:background="@color/colorBackgroundGrey">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="12sp"
-                    android:autoSizeStepGranularity="2sp"
-                    android:autoSizeTextType="uniform"
-                    android:text="@string/fragment_talk_yesterday"
-                    android:textColor="@color/colorTextTitle"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/sympath_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/first_sympath_layout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/first_sympathy"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/iv_banner_shimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:background="@color/colorGrey"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/first_profile_wrapper"
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/tv_popular_shimmer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@color/colorGrey"
+                            android:gravity="center_vertical"
+                            android:text="@string/fragment_talk_Popular_Drama"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_banner_shimmer" />
+
+                        <LinearLayout
+                            android:id="@+id/popularLayout_shimmer"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="44dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginTop="40dp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_popular_shimmer">
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_actor_shimmer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/colorGrey"
+                            android:gravity="center_vertical"
+                            android:text="@string/fragment_talk_Popular_Drama"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/popularLayout_shimmer" />
+
+                        <LinearLayout
+                            android:id="@+id/actorLayout_shimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_actor_shimmer">
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_sympathy"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/colorGrey"
+                            app:layout_constraintTop_toBottomOf="@+id/actorLayout_shimmer" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/colorGrey"
+                            android:gravity="center_vertical"
+                            android:text="@string/fragment_talk_todays"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_sympathy" />
+
+                        <LinearLayout
+                            android:id="@+id/todayLayout_shimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_actor_shimmer">
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                            <include layout="@layout/list_item_cast_shimmer" />
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <!--            <TextView-->
+                <!--                android:id="@+id/titleLabel"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:gravity="center_horizontal"-->
+                <!--                android:paddingBottom="24dp"-->
+                <!--                android:text="본방사수"-->
+                <!--                android:textColor="@color/colorTextTitle" />-->
+
+                <!--            <com.github.islamkhsh.CardSliderViewPager-->
+                <!--                android:id="@+id/noticeView"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="44dp"-->
+                <!--                android:background="#EFF6FA"-->
+                <!--                app:auto_slide_time="5"-->
+                <!--                app:cardSlider_baseShadow="0dp"-->
+                <!--                app:cardSlider_otherPagesWidth="0dp"-->
+                <!--                app:cardSlider_pageMargin="0dp"-->
+                <!--                app:cardSlider_smallScaleFactor="1.0" />-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.github.islamkhsh.CardSliderViewPager
+                        android:id="@+id/bannerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:auto_slide_time="5"
+                        app:cardSlider_baseShadow="0dp"
+                        app:cardSlider_indicator="@id/bannerIndicator"
+                        app:cardSlider_otherPagesWidth="12dp"
+                        app:cardSlider_pageMargin="12dp"
+
+                        app:cardSlider_smallScaleFactor="1.0"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.github.islamkhsh.CardSliderIndicator
+                        android:id="@+id/bannerIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:minHeight="10dp"
+                        app:indicatorsToShow="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bannerView" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/bookmarkLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/bannerIndicator">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/bookmarkTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageView
-                                android:id="@+id/iv_first_profile"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/bg_drama_thumbnail"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_bookmark_title"
+                                android:textColor="@color/colorTextTitle"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/tv_first_sympathy_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text=""
-                                android:textColor="@color/colorTextTitle"
-                                android:textSize="12sp"
+                                android:id="@+id/tvBookMark"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_view_all"
+                                android:textColor="@color/colorTextSegment2"
+                                android:textSize="11sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/iv_first_profile"
                                 app:layout_constraintTop_toTopOf="parent" />
-
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvBookMark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:minHeight="185dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmarkTextLayout" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/layout_second_sympathy"
-                        android:layout_width="0dp"
+                        android:id="@+id/popularLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/img_second_sympathy"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/second_sympathy"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/second_profile_wrapper"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="44dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:id="@+id/iv_second_profile"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/bg_drama_thumbnail"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tv_second_sympathy_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text=""
-                                android:textColor="@color/colorTextTitle"
-                                android:textSize="12sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/iv_second_profile"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/fragment_talk_yesterday_sub"
-                    android:textColor="#317C83"
-                    android:textSize="11sp"
-                    android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="10sp"
-                    android:autoSizeStepGranularity="1sp"
-                    android:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sympath_layout" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:src="@drawable/bubble_smiling"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_content"
-                    app:layout_constraintTop_toBottomOf="@id/sympath_layout" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/todayDramaLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="visible">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/todayDramaTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_todays"
-                        android:textColor="@color/colorTextTitle"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvOrganization"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/fragment_talk_todays_view_all"
-                        android:textColor="@color/colorTextSegment2"
-                        android:textSize="11sp"
+                        android:layout_marginTop="8dp"
                         android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/bookmarkLayout">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/popularTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_Popular_Drama"
+                                android:textColor="@color/colorTextTitle"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvPopular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_view_all"
+                                android:textColor="@color/colorTextSegment2"
+                                android:textSize="11sp"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPopular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:minHeight="185dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/popularTextLayout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/recommendLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@id/popularLayout">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/recommendTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_TheActorWeLove"
+                                android:textColor="@color/colorTextTitle"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvRecommend"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_view_all"
+                                android:textColor="@color/colorTextSegment2"
+                                android:textSize="11sp"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvRecommend"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:minHeight="185dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recommendTextLayout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_first_sympathy"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/colorBackgroundGrey"
+                        app:layout_constraintTop_toBottomOf="@+id/recommendLayout">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:autoSizeMaxTextSize="100sp"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeStepGranularity="2sp"
+                            android:autoSizeTextType="uniform"
+                            android:text="@string/fragment_talk_yesterday"
+                            android:textColor="@color/colorTextTitle"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/sympath_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/first_sympath_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/imageView2"
+                                    android:layout_width="70dp"
+                                    android:layout_height="70dp"
+                                    android:src="@drawable/first_sympathy"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/first_profile_wrapper"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="44dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <ImageView
+                                        android:id="@+id/iv_first_profile"
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/bg_drama_thumbnail"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/tv_first_sympathy_name"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:text=""
+                                        android:textColor="@color/colorTextTitle"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/iv_first_profile"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layout_second_sympathy"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/img_second_sympathy"
+                                    android:layout_width="70dp"
+                                    android:layout_height="70dp"
+                                    android:src="@drawable/second_sympathy"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/second_profile_wrapper"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="44dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <ImageView
+                                        android:id="@+id/iv_second_profile"
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/bg_drama_thumbnail"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/tv_second_sympathy_name"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:text=""
+                                        android:textColor="@color/colorTextTitle"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/iv_second_profile"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:autoSizeMaxTextSize="100sp"
+                            android:autoSizeMinTextSize="10sp"
+                            android:autoSizeStepGranularity="1sp"
+                            android:autoSizeTextType="uniform"
+                            android:text="@string/fragment_talk_yesterday_sub"
+                            android:textColor="#317C83"
+                            android:textSize="11sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/sympath_layout" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/bubble_smiling"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_content"
+                            app:layout_constraintTop_toBottomOf="@id/sympath_layout" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/todayDramaLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_first_sympathy">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/todayDramaTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_todays"
+                                android:textColor="@color/colorTextTitle"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvOrganization"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="16dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fragment_talk_todays_view_all"
+                                android:textColor="@color/colorTextSegment2"
+                                android:textSize="11sp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvDrama"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="24dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/todayDramaTextLayout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvDrama"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="24dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/todayDramaTextLayout" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

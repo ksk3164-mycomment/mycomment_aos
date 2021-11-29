@@ -129,4 +129,5 @@
     <string name="Report_feed">신고하기</string>
     <string name="fragment_detail_overview">줄거리</string>
     <string name="fragment_detail_cast">출연</string>
+    <string name="fragment_profile_report">상대방에게 불쾌감을 주는 콘텐츠가 보인다면 알려주세요</string>
 </resources>

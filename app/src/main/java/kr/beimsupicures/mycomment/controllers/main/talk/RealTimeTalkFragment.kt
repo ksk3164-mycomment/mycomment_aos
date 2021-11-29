@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_drama_feed_detail.*
 import kotlinx.android.synthetic.main.fragment_real_time_talk.*
-import kotlinx.android.synthetic.main.fragment_talk_detail2.*
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.loaders.AnalyticsLoader
 import kr.beimsupicures.mycomment.api.loaders.CommentLoader

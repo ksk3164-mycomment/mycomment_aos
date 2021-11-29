@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.target.Target
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.github.islamkhsh.CardSliderIndicator
 import com.github.islamkhsh.CardSliderViewPager
 import com.google.firebase.database.DataSnapshot
@@ -47,8 +49,6 @@ import java.util.*
 class TalkFragment : BaseFragment() {
 
     var ad: MutableList<AdModel> = mutableListOf()
-
-    private val disposable = CompositeDisposable()
 
     var ymd_date: String = ""
     var talk: MutableList<TalkModel> = mutableListOf()
@@ -93,6 +93,10 @@ class TalkFragment : BaseFragment() {
     lateinit var layoutSecondSympathy: ConstraintLayout
 
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var constraintLayout: ConstraintLayout
+
+    lateinit var shimmerFrameLayout: ShimmerFrameLayout
+    var shimmer = false
 
     var eventModel: MutableList<EventModel> = mutableListOf()
 
@@ -168,6 +172,7 @@ class TalkFragment : BaseFragment() {
         activity?.intent?.removeExtra("Redirection")
         activity?.intent?.removeExtra("deepLink")
         activity?.intent?.removeExtra("Payload")
+
         return inflater.inflate(R.layout.fragment_talk, container, false)
 
     }
@@ -175,10 +180,6 @@ class TalkFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         fetchModel()
-    }
-
-    override fun loadModel() {
-        super.loadModel()
     }
 
     override fun loadUI() {
@@ -209,6 +210,21 @@ class TalkFragment : BaseFragment() {
             tvOrganization = view.findViewById(R.id.tvOrganization)
             rvDrama = view.findViewById(R.id.rvDrama)
             rvPopular = view.findViewById(R.id.rvPopular)
+
+            shimmerFrameLayout = view.findViewById(R.id.shimmer_framelayout)
+            constraintLayout = view.findViewById(R.id.constraintLayout)
+
+            constraintLayout.visibility = View.VISIBLE
+            shimmerFrameLayout.visibility = View.GONE
+
+            if (!shimmer) {
+                activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                constraintLayout.visibility = View.GONE
+                shimmerFrameLayout.visibility = View.VISIBLE
+                shimmerFrameLayout.startShimmer()
+
+                shimmer = true
+            }
 
             swipeRefreshLayout = view.findViewById(R.id.swipe_container)
             swipeRefreshLayout.setOnRefreshListener {
@@ -267,24 +283,21 @@ class TalkFragment : BaseFragment() {
                     .navigate(action)
             }
 
-
             dramaAdapter = TalkTodayAdapter(activity, this.talk)
 
             rvDrama.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
             rvDrama.adapter = dramaAdapter
-
-
 
             popularAdapter = TalkPopularAdapter(activity, this.popular)
             rvPopular.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
             rvPopular.adapter = popularAdapter
 
             rvRecommend = view.findViewById(R.id.rvRecommend)
             recommendAdapter = TalkRecommendAdapter(activity, this.recommend)
             rvRecommend.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
             rvRecommend.adapter = recommendAdapter
 
             database.getReference("event").addValueEventListener(eventListener)
@@ -327,8 +340,6 @@ class TalkFragment : BaseFragment() {
 
     override fun fetchModel() {
         super.fetchModel()
-
-
 
         TalkLoader.shared.getTalkList {
             this.talk = it.toMutableList()
@@ -408,7 +419,10 @@ class TalkFragment : BaseFragment() {
                             recommendAdapter.notifyDataSetChanged()
                             recommendList.clear()
 
-//                            stopLoadingUI()
+                            shimmerFrameLayout.visibility = View.GONE
+                            shimmerFrameLayout.stopShimmer()
+                            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            constraintLayout.visibility = View.VISIBLE
                         }
 
                     }.addOnFailureListener {

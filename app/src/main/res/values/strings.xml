@@ -137,4 +137,5 @@
     <string name="Report_feed">Report</string>
     <string name="fragment_detail_overview">Overview</string>
     <string name="fragment_detail_cast">Cast</string>
+    <string name="fragment_profile_report">Let us know if you see content that is offensive to others</string>
 </resources>

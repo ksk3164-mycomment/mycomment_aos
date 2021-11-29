@@ -28,6 +28,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -62,6 +63,8 @@ class TalkDetailFragment : BaseFragment() {
     lateinit var ivContentImage: ImageView
     lateinit var titleLabel: TextView
     lateinit var contentLabel: TextView
+
+    lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     lateinit var tvOverviewContent: TextView
     lateinit var constraintOverview: ConstraintLayout
@@ -134,6 +137,8 @@ class TalkDetailFragment : BaseFragment() {
         super.loadUI()
 
         view?.let { view ->
+
+            shimmerFrameLayout = view.findViewById(R.id.shimmer_overview)
 
             ivContentImage = view.findViewById(R.id.ivContentImage)
 
@@ -430,11 +435,14 @@ class TalkDetailFragment : BaseFragment() {
 
         talk?.let { talk ->
 
-//            startLoadingUI()
             BaseApplication.shared.getSharedPreferences().setTalkTime()
             BaseApplication.shared.getSharedPreferences().setCurrentTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setPostTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setTalk(talk)
+
+            constraintOverview.visibility = View.GONE
+            shimmerFrameLayout.visibility = View.VISIBLE
+            shimmerFrameLayout.startShimmer()
 
             when (BaseApplication.shared.getSharedPreferences().getLocale()) {
 
@@ -442,63 +450,73 @@ class TalkDetailFragment : BaseFragment() {
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
-                            constraintOverview.visibility = View.VISIBLE
-                            tvOverviewContent.text = tmdb.results[0].overview
 
                             Handler(Looper.getMainLooper()).postDelayed({
+                                tvOverviewContent.text = tmdb.results[0].overview
                                 this.cast = cast.cast!!.toMutableList()
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-//                                stopLoadingUI()
-                            }, 500)
+
+                                shimmerFrameLayout.stopShimmer()
+                                shimmerFrameLayout.visibility = View.GONE
+                                constraintOverview.visibility = View.VISIBLE
+                            }, 1000)
 
                         }
                     } else {
+                        shimmerFrameLayout.stopShimmer()
+                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
-//                        stopLoadingUI()
                     }
                 }
                 "ko" -> TMDBLoader.shared.getSearch(apikey, "ko", talk.title) { tmdb ->
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "ko") { cast ->
-                            constraintOverview.visibility = View.VISIBLE
-                            tvOverviewContent.text = tmdb.results[0].overview
 
                             Handler(Looper.getMainLooper()).postDelayed({
+
+                                tvOverviewContent.text = tmdb.results[0].overview
                                 this.cast = cast.cast!!.toMutableList()
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-//                                stopLoadingUI()
-                            }, 500)
+
+                                shimmerFrameLayout.stopShimmer()
+                                shimmerFrameLayout.visibility = View.GONE
+                                constraintOverview.visibility = View.VISIBLE
+                            }, 1000)
 
                         }
                     } else {
+                        shimmerFrameLayout.stopShimmer()
+                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
-//                        stopLoadingUI()
                     }
                 }
                 else -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
                     if (tmdb.results?.size!! > 0) {
 
                         TMDBLoader.shared.getCredit(tmdb.results[0].id!!, apikey, "en") { cast ->
-                            constraintOverview.visibility = View.VISIBLE
-                            tvOverviewContent.text = tmdb.results[0].overview
 
                             Handler(Looper.getMainLooper()).postDelayed({
+                                tvOverviewContent.text = tmdb.results[0].overview
                                 this.cast = cast.cast!!.toMutableList()
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-//                                stopLoadingUI()
-                            }, 500)
+
+                                shimmerFrameLayout.stopShimmer()
+                                shimmerFrameLayout.visibility = View.GONE
+                                constraintOverview.visibility = View.VISIBLE
+                            }, 1000)
 
                         }
                     } else {
+                        shimmerFrameLayout.stopShimmer()
+                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
-//                        stopLoadingUI()
                     }
 
                 }

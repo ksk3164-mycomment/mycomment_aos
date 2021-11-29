@@ -280,11 +280,20 @@
                 <TextView
                     android:id="@+id/tv_report"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/Report_feed"
                     android:textColor="@color/colorTextTimestamp"
                     android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/fragment_profile_report"
+                    android:textColor="@color/colorTextTimestamp"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <Space

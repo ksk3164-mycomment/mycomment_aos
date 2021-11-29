@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.list_item_talk.view.*
-import kotlinx.android.synthetic.main.list_item_talk.view.profileView
 import kotlinx.android.synthetic.main.list_item_talk_comment.view.*
 import kotlinx.android.synthetic.main.list_item_talk_content.view.*
 import kotlinx.android.synthetic.main.list_item_talk_header.view.contentLabel

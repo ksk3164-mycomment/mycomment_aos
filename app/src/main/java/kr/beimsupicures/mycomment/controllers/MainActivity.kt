@@ -342,11 +342,10 @@ class MainActivity : BaseActivity() {
                 R.id.searchTalkFragment -> {
 
                     bottom_nav.visibility = View.GONE
-
                     isSearchFragment = true
                     searchText.visibility = View.GONE
-                    searchText.text = getString(R.string.activity_main_searchText)
                     searchField.visibility = View.VISIBLE
+                    searchField.setText("")
                     searchField.hint = getString(R.string.activity_main_searchText)
                     toolbar.btnBack.visibility = View.GONE
                     toolbar.btnBookmark.visibility = View.GONE

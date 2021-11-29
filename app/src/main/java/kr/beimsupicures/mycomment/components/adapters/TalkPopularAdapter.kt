@@ -3,28 +3,17 @@ package kr.beimsupicures.mycomment.components.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.list_item_talk3.view.*
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
-import kr.beimsupicures.mycomment.api.loaders.PickLoader
-import kr.beimsupicures.mycomment.api.models.PickModel
 import kr.beimsupicures.mycomment.api.models.TalkModel
 import kr.beimsupicures.mycomment.api.models.onAir
-import kr.beimsupicures.mycomment.api.models.pick
-import kr.beimsupicures.mycomment.common.isPushEnabledAtOSLevel
-import kr.beimsupicures.mycomment.components.application.BaseApplication
-import kr.beimsupicures.mycomment.components.dialogs.WaterDropDialog
-import kr.beimsupicures.mycomment.extensions.getSharedPreferences
-import kr.beimsupicures.mycomment.extensions.getUser
-import kr.beimsupicures.mycomment.extensions.popup
 
 class TalkPopularAdapter(val activity: FragmentActivity?, var items: MutableList<TalkModel>) :
     RecyclerView.Adapter<TalkPopularAdapter.ViewHolder>() {
@@ -44,13 +33,7 @@ class TalkPopularAdapter(val activity: FragmentActivity?, var items: MutableList
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when (holder) {
-
-            is ViewHolder -> {
-                holder.bind(items[position], position)
-            }
-
-        }
+        holder.bind(items[holder.bindingAdapterPosition], holder.bindingAdapterPosition)
     }
 
     inner class ViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,7 +42,8 @@ class TalkPopularAdapter(val activity: FragmentActivity?, var items: MutableList
         val profileView = itemView.profileView
         val titleLabel = itemView.titleLabel
         val bookmarkCountLabel = itemView.bookmarkCountLabel
-//        val descLabel = itemView.descLabel
+
+        //        val descLabel = itemView.descLabel
         val countLabel = itemView.countLabel
 
         fun bind(viewModel: TalkModel, position: Int) {
@@ -124,11 +108,11 @@ class TalkPopularAdapter(val activity: FragmentActivity?, var items: MutableList
             onAirView.visibility = if (viewModel.onAir) View.VISIBLE else View.GONE
             Glide.with(itemView.context).load(viewModel.poster_image_url)
                 .placeholder(R.color.colorGrey)
-                .transform(CenterCrop(),RoundedCorners(30))
+                .transform(CenterCrop(), RoundedCorners(30))
                 .into(profileView)
             titleLabel.text = viewModel.title
 //            descLabel.text = "${viewModel.dayString} ${viewModel.openTimeString}"
-            countLabel.text =  viewModel.talk_count.toString()
+            countLabel.text = viewModel.talk_count.toString()
             bookmarkCountLabel.text = viewModel.bookmark_count.toString()
 
             itemView.setOnClickListener {

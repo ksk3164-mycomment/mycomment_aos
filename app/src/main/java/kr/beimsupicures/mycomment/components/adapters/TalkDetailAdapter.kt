@@ -1,9 +1,5 @@
 package kr.beimsupicures.mycomment.components.adapters
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.list_item_talk.view.*
-import kotlinx.android.synthetic.main.list_item_talk.view.profileView
 import kotlinx.android.synthetic.main.list_item_talk_comment.view.*
-import kotlinx.android.synthetic.main.list_item_talk_content.view.*
-import kotlinx.android.synthetic.main.list_item_talk_header.view.contentLabel
-import kotlinx.android.synthetic.main.list_item_talk_tab.view.*
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.loaders.CommentLoader
@@ -33,7 +24,6 @@ import kr.beimsupicures.mycomment.components.application.BaseApplication
 import kr.beimsupicures.mycomment.components.dialogs.BubbleUserListDialog
 import kr.beimsupicures.mycomment.components.dialogs.ReportDialog
 import kr.beimsupicures.mycomment.extensions.*
-import java.lang.Exception
 
 class TalkDetailAdapter(
     val activity: FragmentActivity?,
