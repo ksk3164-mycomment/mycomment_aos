@@ -170,7 +170,8 @@ class TalkDetailAdapter(
                     profileLayout.layoutParams = layoutParams
                     replyLayout.visibility = View.VISIBLE
                     deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
-                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+//                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+                    blockView.visibility = View.GONE
                     reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
                 }
             }

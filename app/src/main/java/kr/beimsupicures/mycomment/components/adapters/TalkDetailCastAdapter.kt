@@ -50,7 +50,6 @@ class TalkDetailCastAdapter(val activity: FragmentActivity?, var items: MutableL
             Glide.with(itemView.context).load("https://image.tmdb.org/t/p/w500"+viewModel.profile_path)
                 .placeholder(R.color.colorGrey)
                 .transform(CenterCrop(),RoundedCorners(30))
-                .thumbnail(0.5f)
                 .into(profileView)
             titleLabel.text = viewModel.name
             characterLabel.text =  viewModel.character

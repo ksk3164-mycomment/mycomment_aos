@@ -164,7 +164,8 @@ class FeedDetailAdapter(
                     profileLayout.layoutParams = layoutParams
                     replyLayout.visibility = View.VISIBLE
                     deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
-                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+//                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+                    blockView.visibility = View.GONE
                     reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
                 }
             }
@@ -281,7 +282,8 @@ class FeedDetailAdapter(
                     }).show(fragmentManager, "")
                 }
             }
-            blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+//            blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+            blockView.visibility = View.GONE
             blockView.setOnClickListener { view ->
                 activity?.let { activity ->
                     activity.popup(

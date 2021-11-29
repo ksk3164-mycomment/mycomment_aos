@@ -430,7 +430,7 @@ class TalkDetailFragment : BaseFragment() {
 
         talk?.let { talk ->
 
-            startLoadingUI()
+//            startLoadingUI()
             BaseApplication.shared.getSharedPreferences().setTalkTime()
             BaseApplication.shared.getSharedPreferences().setCurrentTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setPostTalkId(talk.id)
@@ -450,13 +450,13 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-                                stopLoadingUI()
+//                                stopLoadingUI()
                             }, 500)
 
                         }
                     } else {
                         constraintOverview.visibility = View.GONE
-                        stopLoadingUI()
+//                        stopLoadingUI()
                     }
                 }
                 "ko" -> TMDBLoader.shared.getSearch(apikey, "ko", talk.title) { tmdb ->
@@ -471,13 +471,13 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-                                stopLoadingUI()
+//                                stopLoadingUI()
                             }, 500)
 
                         }
                     } else {
                         constraintOverview.visibility = View.GONE
-                        stopLoadingUI()
+//                        stopLoadingUI()
                     }
                 }
                 else -> TMDBLoader.shared.getSearch(apikey, "en", talk.title) { tmdb ->
@@ -492,13 +492,13 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.items = this.cast
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
-                                stopLoadingUI()
+//                                stopLoadingUI()
                             }, 500)
 
                         }
                     } else {
                         constraintOverview.visibility = View.GONE
-                        stopLoadingUI()
+//                        stopLoadingUI()
                     }
 
                 }
