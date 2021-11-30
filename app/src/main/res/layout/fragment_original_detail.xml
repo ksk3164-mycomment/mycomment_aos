@@ -48,39 +48,39 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:rewind_increment="10000"
-            app:show_timeout="3000"
             app:show_buffering="always"
+            app:show_timeout="3000"
             app:use_controller="true" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_volume"
             android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/iv_speaker"
-            android:layout_width="10dp"
-            android:layout_height="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_speaker"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/iv_speaker"
+                android:layout_width="10dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/ic_speaker"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <SeekBar
-            android:id="@+id/volume_control"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="100"
-            android:rotation="270"
-            android:layout_marginTop="60dp"
-            android:progressBackgroundTint="@color/colorWhite"
-            android:thumb="@android:color/transparent"
-            android:translationX="-53dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_speaker" />
+            <SeekBar
+                android:id="@+id/volume_control"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:max="100"
+                android:progress="100"
+                android:progressBackgroundTint="@color/colorWhite"
+                android:rotation="270"
+                android:thumb="@android:color/transparent"
+                android:translationX="-53dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_speaker" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,10 +222,13 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorTextTitle"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
                 app:tabSelectedTextColor="@android:color/black"
-                app:tabTextColor="@color/colorTextTimestamp"
-                app:tabIndicatorColor="@color/colorTextTitle" />
+                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                app:tabTextColor="@color/colorTextTimestamp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

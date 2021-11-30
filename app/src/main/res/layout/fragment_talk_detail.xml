@@ -216,8 +216,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 android:layout_marginTop="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tv_cast_shimmer">
 
@@ -306,7 +306,10 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                app:tabGravity="fill"
                 app:tabIndicatorColor="@color/colorTextTitle"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
                 app:tabSelectedTextColor="@android:color/black"
                 app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                 app:tabTextColor="@color/colorTextTimestamp" />
