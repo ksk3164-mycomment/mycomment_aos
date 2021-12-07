@@ -308,7 +308,10 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                app:tabGravity="fill"
                 app:tabIndicatorColor="@color/colorTextTitle"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
                 app:tabSelectedTextColor="@android:color/black"
                 app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                 app:tabTextColor="@color/colorTextTimestamp" />

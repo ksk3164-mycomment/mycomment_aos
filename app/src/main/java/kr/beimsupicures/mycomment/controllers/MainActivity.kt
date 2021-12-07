@@ -65,6 +65,8 @@ import kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedDetailFragment
 import kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedModifyFragment
 import kr.beimsupicures.mycomment.controllers.main.feed.DramaFeedWriteFragment
 import kr.beimsupicures.mycomment.controllers.main.original.OriginalDetailFragment
+import kr.beimsupicures.mycomment.controllers.main.original.OriginalFragment
+import kr.beimsupicures.mycomment.controllers.main.profile.ProfileFragment
 import kr.beimsupicures.mycomment.controllers.main.search.SearchTalkFragment
 import kr.beimsupicures.mycomment.controllers.main.talk.*
 import kr.beimsupicures.mycomment.controllers.signs.SignInFragment
@@ -94,7 +96,6 @@ class MainActivity : BaseActivity() {
     var original: MutableList<OriginalModel> = mutableListOf()
 
     lateinit var audioManager: AudioManager
-
 
     var s3Url = "https://s3.ap-northeast-2.amazonaws.com/kr.beimsupicures.mycomment/feed/"
 
@@ -173,6 +174,8 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         auth = Firebase.auth
+
+        initNavigationBar()
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
@@ -738,28 +741,31 @@ class MainActivity : BaseActivity() {
                                                                             .setFeedId(
                                                                                 feedModel.feed_seq
                                                                             )
-                                                                        Handler(Looper.getMainLooper()).postDelayed({
-                                                                            Navigation.findNavController(
-                                                                                fragment.requireView()
-                                                                            )
-                                                                                .popBackStack(
-                                                                                    R.id.dramaFeedWriteFragment,
-                                                                                    false
+                                                                        Handler(Looper.getMainLooper()).postDelayed(
+                                                                            {
+                                                                                Navigation.findNavController(
+                                                                                    fragment.requireView()
                                                                                 )
-                                                                            Navigation.findNavController(
-                                                                                fragment.requireView()
-                                                                            )
-                                                                                .popBackStack()
-                                                                            val action =
-                                                                                NavigationDirections.actionGlobalDramaFeedDetailFragment()
-                                                                            Navigation.findNavController(
-                                                                                this,
-                                                                                R.id.nav_host_fragment
-                                                                            )
-                                                                                .navigate(action)
+                                                                                    .popBackStack(
+                                                                                        R.id.dramaFeedWriteFragment,
+                                                                                        false
+                                                                                    )
+                                                                                Navigation.findNavController(
+                                                                                    fragment.requireView()
+                                                                                )
+                                                                                    .popBackStack()
+                                                                                val action =
+                                                                                    NavigationDirections.actionGlobalDramaFeedDetailFragment()
+                                                                                Navigation.findNavController(
+                                                                                    this,
+                                                                                    R.id.nav_host_fragment
+                                                                                )
+                                                                                    .navigate(action)
 
-                                                                            loadingDialog.dismiss()
-                                                                        }, 4000)
+                                                                                loadingDialog.dismiss()
+                                                                            },
+                                                                            4000
+                                                                        )
                                                                     }
                                                                 }
                                                             }
@@ -1078,7 +1084,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.originalFragment -> {
-                    super.onBackPressed()
+                    bottom_nav.selectedItemId = R.id.page_talk
                     tv_original.setTextColor(ContextCompat.getColor(this, R.color.colorGrey))
                     tv_home.setTextColor(ContextCompat.getColor(this, R.color.black))
                     ivHome.setImageResource(R.drawable.ic_chat_on)
@@ -1164,8 +1170,6 @@ class MainActivity : BaseActivity() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    var handler = Handler()
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
@@ -1174,7 +1178,7 @@ class MainActivity : BaseActivity() {
                         R.id.originalDetailFragment -> {
                             (supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.firstOrNull() as OriginalDetailFragment).let { fragment ->
 
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     fragment.volumeControl.setProgress(
                                         fragment.volumeControl.progress - 1,
                                         true
@@ -1183,7 +1187,7 @@ class MainActivity : BaseActivity() {
                                     if (!fragment.layoutVolume.isVisible) {
                                         fragment.layoutVolume.visibility = View.VISIBLE
 
-                                        handler.postDelayed({
+                                        Handler(Looper.getMainLooper()).postDelayed({
                                             fragment.layoutVolume.visibility = View.INVISIBLE
                                         }, 3000)
                                     }
@@ -1207,7 +1211,7 @@ class MainActivity : BaseActivity() {
                         R.id.originalDetailFragment -> {
                             (supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.firstOrNull() as OriginalDetailFragment).let { fragment ->
 
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     fragment.volumeControl.setProgress(
                                         fragment.volumeControl.progress + 1,
                                         true
@@ -1216,7 +1220,7 @@ class MainActivity : BaseActivity() {
                                     if (!fragment.layoutVolume.isVisible) {
                                         fragment.layoutVolume.visibility = View.VISIBLE
 
-                                        handler.postDelayed({
+                                        Handler(Looper.getMainLooper()).postDelayed({
                                             fragment.layoutVolume.visibility = View.INVISIBLE
                                         }, 3000)
                                     }
@@ -1243,5 +1247,73 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         BaseApplication.shared.getSharedPreferences().edit().putBoolean("noticeTF", false).apply()
+    }
+
+    fun initNavigationBar() {
+
+        bottom_nav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.page_talk -> {
+                    navController.currentDestination?.id.let { id ->
+                        when (id) {
+                            R.id.talkFragment -> {}
+
+                            else -> {
+                                val action = NavigationDirections.actionGlobalTalkFragment2(null)
+                                Navigation.findNavController(this, R.id.nav_host_fragment)
+                                    .navigate(action)
+                            }
+                        }
+                    }
+                    return@setOnItemSelectedListener true
+                }
+                R.id.page_original -> {
+
+                    navController.currentDestination?.id.let { id ->
+                        when (id) {
+                            R.id.originalFragment -> {}
+
+                            else -> {
+                                val action = NavigationDirections.actionGlobalOriginalFragment()
+                                Navigation.findNavController(this, R.id.nav_host_fragment)
+                                    .navigate(action)
+                            }
+                        }
+                    }
+
+                    return@setOnItemSelectedListener true
+                }
+                R.id.page_profile -> {
+
+                    BaseApplication.shared.getSharedPreferences().getUser()?.let { user ->
+
+                        navController.currentDestination?.id.let { id ->
+                            when (id) {
+                                R.id.profileFragment -> {}
+
+                                else -> {
+                                    val action =
+                                        NavigationDirections.actionGlobalProfileFragment(user.id)
+                                    Navigation.findNavController(this, R.id.nav_host_fragment)
+                                        .navigate(action)
+                                }
+                            }
+                        }
+
+                    } ?: run {
+                        this.popup(
+                            this.getString(R.string.Doyouwantlogin),
+                            this.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(this, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
+                        }
+                    }
+                    return@setOnItemSelectedListener true
+                }
+                else -> return@setOnItemSelectedListener false
+            }
+
+        }
     }
 }

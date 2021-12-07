@@ -189,7 +189,7 @@ class FeedCommentLoader :BaseLoader<FeedCommentService>{
                         val newValue = response.body()?.result
                         newValue?.let { newValue ->
 
-                            items.addAll(newValue.distinct())
+                            items.addAll(newValue)
                             page += 1
                             isLoading = false
                             isLast = (newValue.size == 0)
