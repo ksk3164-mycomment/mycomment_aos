@@ -4,10 +4,13 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Library/Android/sdk/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Library/Android/sdk/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/res" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/caches/transforms-3/481a6b9d7000f989ee07506c601b326e/transformed/jetified-v2-network-2.5.2/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kakao.sdk/v2-network/2.5.2/d0bc72d4b88105ad86554e355585b35cd3e30e6b/v2-network-2.5.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/caches/modules-2/files-2.1/com.kakao.sdk/v2-network/2.5.2/d0bc72d4b88105ad86554e355585b35cd3e30e6b/v2-network-2.5.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

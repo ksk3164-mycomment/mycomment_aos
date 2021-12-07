@@ -175,7 +175,7 @@ class MainActivity : BaseActivity() {
 
         auth = Firebase.auth
 
-        initNavigationBar()
+//        initNavigationBar()
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
@@ -1084,7 +1084,8 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.originalFragment -> {
-                    bottom_nav.selectedItemId = R.id.page_talk
+//                    bottom_nav.selectedItemId = R.id.page_talk
+                    onBackPressed()
                     tv_original.setTextColor(ContextCompat.getColor(this, R.color.colorGrey))
                     tv_home.setTextColor(ContextCompat.getColor(this, R.color.black))
                     ivHome.setImageResource(R.drawable.ic_chat_on)
@@ -1249,71 +1250,71 @@ class MainActivity : BaseActivity() {
         BaseApplication.shared.getSharedPreferences().edit().putBoolean("noticeTF", false).apply()
     }
 
-    fun initNavigationBar() {
-
-        bottom_nav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.page_talk -> {
-                    navController.currentDestination?.id.let { id ->
-                        when (id) {
-                            R.id.talkFragment -> {}
-
-                            else -> {
-                                val action = NavigationDirections.actionGlobalTalkFragment2(null)
-                                Navigation.findNavController(this, R.id.nav_host_fragment)
-                                    .navigate(action)
-                            }
-                        }
-                    }
-                    return@setOnItemSelectedListener true
-                }
-                R.id.page_original -> {
-
-                    navController.currentDestination?.id.let { id ->
-                        when (id) {
-                            R.id.originalFragment -> {}
-
-                            else -> {
-                                val action = NavigationDirections.actionGlobalOriginalFragment()
-                                Navigation.findNavController(this, R.id.nav_host_fragment)
-                                    .navigate(action)
-                            }
-                        }
-                    }
-
-                    return@setOnItemSelectedListener true
-                }
-                R.id.page_profile -> {
-
-                    BaseApplication.shared.getSharedPreferences().getUser()?.let { user ->
-
-                        navController.currentDestination?.id.let { id ->
-                            when (id) {
-                                R.id.profileFragment -> {}
-
-                                else -> {
-                                    val action =
-                                        NavigationDirections.actionGlobalProfileFragment(user.id)
-                                    Navigation.findNavController(this, R.id.nav_host_fragment)
-                                        .navigate(action)
-                                }
-                            }
-                        }
-
-                    } ?: run {
-                        this.popup(
-                            this.getString(R.string.Doyouwantlogin),
-                            this.getString(R.string.Login)
-                        ) {
-                            Navigation.findNavController(this, R.id.nav_host_fragment)
-                                .navigate(R.id.action_global_signInFragment)
-                        }
-                    }
-                    return@setOnItemSelectedListener true
-                }
-                else -> return@setOnItemSelectedListener false
-            }
-
-        }
-    }
+//    fun initNavigationBar() {
+//
+//        bottom_nav.setOnItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.page_talk -> {
+//                    navController.currentDestination?.id.let { id ->
+//                        when (id) {
+//                            R.id.talkFragment -> {}
+//
+//                            else -> {
+//                                val action = NavigationDirections.actionGlobalTalkFragment2(null)
+//                                Navigation.findNavController(this, R.id.nav_host_fragment)
+//                                    .navigate(action)
+//                            }
+//                        }
+//                    }
+//                    return@setOnItemSelectedListener true
+//                }
+//                R.id.page_original -> {
+//
+//                    navController.currentDestination?.id.let { id ->
+//                        when (id) {
+//                            R.id.originalFragment -> {}
+//
+//                            else -> {
+//                                val action = NavigationDirections.actionGlobalOriginalFragment()
+//                                Navigation.findNavController(this, R.id.nav_host_fragment)
+//                                    .navigate(action)
+//                            }
+//                        }
+//                    }
+//
+//                    return@setOnItemSelectedListener true
+//                }
+//                R.id.page_profile -> {
+//
+//                    BaseApplication.shared.getSharedPreferences().getUser()?.let { user ->
+//
+//                        navController.currentDestination?.id.let { id ->
+//                            when (id) {
+//                                R.id.profileFragment -> {}
+//
+//                                else -> {
+//                                    val action =
+//                                        NavigationDirections.actionGlobalProfileFragment(user.id)
+//                                    Navigation.findNavController(this, R.id.nav_host_fragment)
+//                                        .navigate(action)
+//                                }
+//                            }
+//                        }
+//
+//                    } ?: run {
+//                        this.popup(
+//                            this.getString(R.string.Doyouwantlogin),
+//                            this.getString(R.string.Login)
+//                        ) {
+//                            Navigation.findNavController(this, R.id.nav_host_fragment)
+//                                .navigate(R.id.action_global_signInFragment)
+//                        }
+//                    }
+//                    return@setOnItemSelectedListener true
+//                }
+//                else -> return@setOnItemSelectedListener false
+//            }
+//
+//        }
+//    }
 }

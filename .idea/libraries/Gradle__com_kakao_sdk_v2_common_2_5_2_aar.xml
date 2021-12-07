@@ -4,10 +4,13 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/Library/Android/sdk/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/Library/Android/sdk/caches/transforms-3/ed9f6718268d985923f5ea8e23c2d8f4/transformed/jetified-v2-common-2.5.2/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kakao.sdk/v2-common/2.5.2/58d8713ef8f05cc8f08cbf5d0aa83a06cd0199ef/v2-common-2.5.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/caches/modules-2/files-2.1/com.kakao.sdk/v2-common/2.5.2/58d8713ef8f05cc8f08cbf5d0aa83a06cd0199ef/v2-common-2.5.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
