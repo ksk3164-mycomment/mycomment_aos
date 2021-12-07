@@ -79,6 +79,8 @@ class ProfileFragment : BaseFragment() {
     lateinit var reportWrapperView: LinearLayout
     lateinit var tvReport: TextView
 
+    lateinit var tvBlock: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -309,6 +311,33 @@ class ProfileFragment : BaseFragment() {
                                 .navigate(R.id.action_global_signInFragment)
                         }
                     }
+                }
+            }
+
+            tvBlock = view.findViewById(R.id.tv_block)
+            tvBlock.setOnClickListener {
+                activity?.let { activity ->
+                    activity.popup(
+                        getString(R.string.Block_popup_title),
+                        activity.getString(R.string.Block_Comment)
+                    ) {
+                        val blockUser =
+                            BaseApplication.shared.getSharedPreferences().getBlockUser()
+                        if (blockUser == null) {
+
+                            val mutableList: MutableList<String> = mutableListOf()
+                            mutableList.add(this.user.id.toString())
+                            BaseApplication.shared.getSharedPreferences()
+                                .setBlockUser(mutableList)
+
+                        } else {
+                            blockUser.add(this.user.id.toString())
+                            BaseApplication.shared.getSharedPreferences()
+                                .setBlockUser(blockUser)
+                        }
+                        activity.onBackPressed()
+                    }
+
                 }
             }
 

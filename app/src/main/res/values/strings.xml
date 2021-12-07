@@ -73,7 +73,7 @@
     <string name="Delete">Delete</string>
     <string name="FeelTheSame">Feel the same</string>
     <string name="Block">Block</string>
-    <string name="Block_Comment">Block Comment</string>
+    <string name="Block_Comment">Block</string>
     <string name="Block_alert">Do you want to block this comment?</string>
     <string name="Notification">Notification</string>
     <string name="Basefragment_loginban">Your activity has been restricted because you wrote an comment that is restricted in the operating principles</string>
@@ -138,4 +138,8 @@
     <string name="fragment_detail_overview">Overview</string>
     <string name="fragment_detail_cast">Cast</string>
     <string name="fragment_profile_report">Let us know if you see content that is offensive to others</string>
+    <string name="Block_profile">Block</string>
+    <string name="Block_popup_title">Are you really going to block this user? You will not be able to see the user\'s comments and profile, and it will be impossible to unblock</string>
+    <string name="Block_alert_title">It has been blocked</string>
+    <string name="Block_alert_user">This user has been blocked</string>
 </resources>

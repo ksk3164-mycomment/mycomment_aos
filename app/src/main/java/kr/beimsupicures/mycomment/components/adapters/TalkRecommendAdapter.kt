@@ -44,13 +44,7 @@ class TalkRecommendAdapter(val activity: FragmentActivity?, var items: MutableLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when (holder) {
-
-            is ViewHolder -> {
-                holder.bind(items[position], position)
-            }
-
-        }
+        holder.bind(items[position], position)
     }
 
     inner class ViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,7 +53,8 @@ class TalkRecommendAdapter(val activity: FragmentActivity?, var items: MutableLi
         val profileView = itemView.profileView
         val titleLabel = itemView.titleLabel
         val bookmarkCountLabel = itemView.bookmarkCountLabel
-//        val descLabel = itemView.descLabel
+
+        //        val descLabel = itemView.descLabel
         val countLabel = itemView.countLabel
 
         fun bind(viewModel: TalkModel, position: Int) {
@@ -124,11 +119,11 @@ class TalkRecommendAdapter(val activity: FragmentActivity?, var items: MutableLi
             onAirView.visibility = if (viewModel.onAir) View.VISIBLE else View.GONE
             Glide.with(itemView.context).load(viewModel.poster_image_url)
                 .placeholder(R.color.colorGrey)
-                .transform(CenterCrop(),RoundedCorners(30))
+                .transform(CenterCrop(), RoundedCorners(30))
                 .into(profileView)
             titleLabel.text = viewModel.title
 //            descLabel.text = "${viewModel.dayString} ${viewModel.openTimeString}"
-            countLabel.text =  viewModel.talk_count.toString()
+            countLabel.text = viewModel.talk_count.toString()
             bookmarkCountLabel.text = viewModel.bookmark_count.toString()
 
             itemView.setOnClickListener {

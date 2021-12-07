@@ -229,20 +229,41 @@ class TalkFragment : BaseFragment() {
             swipeRefreshLayout = view.findViewById(R.id.swipe_container)
             swipeRefreshLayout.setOnRefreshListener {
                 fetchModel()
-//                refresh()
                 swipeRefreshLayout.isRefreshing = false
             }
 
             firstProfileWrapper.setOnClickListener {
-                val action =
-                    NavigationDirections.actionGlobalProfileFragment(pickTop[0].category_owner_id)
-                it.findNavController().navigate(action)
+                Log.e("tjdrnr", "" + BaseApplication.shared.getSharedPreferences().getBlockUser())
+                Log.e("tjdrnr", "" + pickTop[0].category_owner_id.toString())
+                if (BaseApplication.shared.getSharedPreferences().getBlockUser()
+                        ?.contains(pickTop[0].category_owner_id.toString()) == true
+                ) {
+                    activity?.alert(
+                        getString(R.string.Block_alert_user),
+                        getString(R.string.Notification)
+                    ) {}
+                } else {
+                    val action =
+                        NavigationDirections.actionGlobalProfileFragment(pickTop[0].category_owner_id)
+                    it.findNavController().navigate(action)
+                }
+
             }
 
             secondProfileWrapper.setOnClickListener {
-                val action =
-                    NavigationDirections.actionGlobalProfileFragment(pickTop[1].category_owner_id)
-                it.findNavController().navigate(action)
+                Log.e("tjdrnr", "" + BaseApplication.shared.getSharedPreferences().getBlockUser())
+                if (BaseApplication.shared.getSharedPreferences().getBlockUser()
+                        ?.contains(pickTop[1].category_owner_id.toString()) == true
+                ) {
+                    activity?.alert(
+                        getString(R.string.Block_alert_user),
+                        getString(R.string.Notification)
+                    ) {}
+                } else {
+                    val action =
+                        NavigationDirections.actionGlobalProfileFragment(pickTop[1].category_owner_id)
+                    it.findNavController().navigate(action)
+                }
             }
 
             BaseApplication.shared.getSharedPreferences().getUser()?.let {
@@ -286,18 +307,18 @@ class TalkFragment : BaseFragment() {
             dramaAdapter = TalkTodayAdapter(activity, this.talk)
 
             rvDrama.layoutManager =
-                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvDrama.adapter = dramaAdapter
 
             popularAdapter = TalkPopularAdapter(activity, this.popular)
             rvPopular.layoutManager =
-                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvPopular.adapter = popularAdapter
 
             rvRecommend = view.findViewById(R.id.rvRecommend)
             recommendAdapter = TalkRecommendAdapter(activity, this.recommend)
             rvRecommend.layoutManager =
-                LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rvRecommend.adapter = recommendAdapter
 
             database.getReference("event").addValueEventListener(eventListener)
@@ -361,11 +382,6 @@ class TalkFragment : BaseFragment() {
 
         UserLoader.shared.getUserBookmarkTalk { bookmark ->
             this.bookmark = bookmark.toMutableList()
-//            if (this.bookmark.size > 0) {
-//                bookmarkLayout.visibility = View.VISIBLE
-//            } else {
-//                bookmarkLayout.visibility = View.GONE
-//            }
             bookMarkAdapter.items = this.bookmark
             bookMarkAdapter.notifyDataSetChanged()
 
@@ -376,13 +392,14 @@ class TalkFragment : BaseFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
 
             SearchLoader.shared.searchTalk("") { it ->
-                popular.clear()
-                recommend.clear()
+
                 category = it.toMutableList()
 
                 database.getReference("mainCategoryList").child("popularList").get()
                     .addOnSuccessListener {
                         it.value?.let { value ->
+                            popular.clear()
+                            popularList.clear()
                             for (data in it.children) {
                                 val modelResult = data.getValue(Int::class.java)
                                 popularList.add(modelResult!!)
@@ -392,9 +409,8 @@ class TalkFragment : BaseFragment() {
                                     .toMutableList())
                             }
 
-                            popularAdapter.items = this.popular
+                            popularAdapter.items = popular
                             popularAdapter.notifyDataSetChanged()
-                            popularList.clear()
 
                         }
 
@@ -405,7 +421,8 @@ class TalkFragment : BaseFragment() {
                 database.getReference("mainCategoryList").child("recommendList").get()
                     .addOnSuccessListener {
                         it.value?.let { value ->
-
+                            recommend.clear()
+                            recommendList.clear()
                             for (data in it.children) {
                                 val modelResult = data.getValue(Int::class.java)
                                 recommendList.add(modelResult!!)
@@ -415,9 +432,8 @@ class TalkFragment : BaseFragment() {
                                     .toMutableList())
                             }
 
-                            recommendAdapter.items = this.recommend
+                            recommendAdapter.items = recommend
                             recommendAdapter.notifyDataSetChanged()
-                            recommendList.clear()
 
                             shimmerFrameLayout.visibility = View.GONE
                             shimmerFrameLayout.stopShimmer()
@@ -434,56 +450,6 @@ class TalkFragment : BaseFragment() {
 
         }, 100) // 0.5초 정도 딜레이를 준 후 시작
 
-//        if (TalkFragmentArgs.fromBundle(requireArguments()).talk != null) {
-//            popular.clear()
-//            recommend.clear()
-//            category = TalkFragmentArgs.fromBundle(requireArguments()).talk!!.toMutableList()
-//
-//            database.getReference("mainCategoryList").child("popularList").get()
-//                .addOnSuccessListener {
-//                    it.value?.let { value ->
-//                        for (data in it.children) {
-//                            val modelResult = data.getValue(Int::class.java)
-//                            popularList.add(modelResult!!)
-//                        }
-//                            for (i in popularList.indices) {
-//                                popular.addAll(category.filter { it.id == popularList[i] }
-//                                    .toMutableList())
-//                            }
-//
-//                        popularAdapter.items = this.popular
-//                        popularAdapter.notifyDataSetChanged()
-//                        popularList.clear()
-//
-//                    }
-//
-//                }.addOnFailureListener {
-//                    Log.e("firebase", "Error getting data", it)
-//                }
-//
-//            database.getReference("mainCategoryList").child("recommendList").get()
-//                .addOnSuccessListener {
-//                    it.value?.let { value ->
-//
-//                        for (data in it.children) {
-//                            val modelResult = data.getValue(Int::class.java)
-//                            recommendList.add(modelResult!!)
-//                        }
-//                            for (i in recommendList.indices) {
-//                                recommend.addAll(category.filter { it.id == recommendList[i] }
-//                                    .toMutableList())
-//                            }
-//
-//                        recommendAdapter.items = this.recommend
-//                        recommendAdapter.notifyDataSetChanged()
-//                        recommendList.clear()
-//
-//                    }
-//
-//                }.addOnFailureListener {
-//                    Log.e("firebase", "Error getting data", it)
-//                }
-//        }
 
         val day = Calendar.getInstance()
         day.add(Calendar.DATE, -1)
@@ -541,66 +507,6 @@ class TalkFragment : BaseFragment() {
         }
 
     }
-//    fun refresh() {
-//        SearchLoader.shared.searchTalk("") { talk ->
-//
-//            recommendList.clear()
-//            popularList.clear()
-//            popular.clear()
-//            recommend.clear()
-//
-//            category = talk
-//
-//            database.getReference("mainCategoryList").child("popularList").get()
-//                .addOnSuccessListener {
-//                    it.value?.let { value ->
-//                        for (data in it.children) {
-//                            val modelResult = data.getValue(Int::class.java)
-//                            popularList.add(modelResult!!)
-//                        }
-//                        if (popularList.size > popular.size) {
-//                            for (i in popularList.indices) {
-//                                popular.addAll(category.filter { it.id == popularList[i] }
-//                                    .toMutableList())
-//                            }
-//
-//                            popularAdapter.items = this.popular
-//                            popularAdapter.notifyDataSetChanged()
-//                        }
-//
-//
-//                    }
-//
-//                }.addOnFailureListener {
-//                    Log.e("firebase", "Error getting data", it)
-//                }
-//
-//            database.getReference("mainCategoryList").child("recommendList").get()
-//                .addOnSuccessListener {
-//                    it.value?.let { value ->
-//                        for (data in it.children) {
-//                            val modelResult = data.getValue(Int::class.java)
-//                            recommendList.add(modelResult!!)
-//                        }
-//                        if (recommendList.size > recommend.size) {
-//                            for (i in recommendList.indices) {
-//                                recommend.addAll(category.filter { it.id == recommendList[i] }
-//                                    .toMutableList())
-//                            }
-//
-//                            recommendAdapter.items = this.recommend
-//                            recommendAdapter.notifyDataSetChanged()
-//                        }
-//
-//
-//                    }
-//
-//                }.addOnFailureListener {
-//                    Log.e("firebase", "Error getting data", it)
-//                }
-//
-//        }
-//    }
 
 
 //    fun sort(talk: MutableList<TalkModel>): MutableList<TalkModel> {

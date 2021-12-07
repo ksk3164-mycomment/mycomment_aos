@@ -1,6 +1,7 @@
 package kr.beimsupicures.mycomment.api.models
 
 import kr.beimsupicures.mycomment.components.application.BaseApplication
+import kr.beimsupicures.mycomment.extensions.getBlockUser
 import kr.beimsupicures.mycomment.extensions.getSharedPreferences
 import kr.beimsupicures.mycomment.extensions.getUser
 
@@ -20,4 +21,10 @@ data class CommentModel(
 val CommentModel.isMe: Boolean
     get() {
         return (user_id == BaseApplication.shared.getSharedPreferences().getUser()?.id)
+    }
+
+val CommentModel.blockUser: Boolean
+    get() {
+        return (BaseApplication.shared.getSharedPreferences().getBlockUser()
+            ?.contains(user_id.toString()) == true)
     }

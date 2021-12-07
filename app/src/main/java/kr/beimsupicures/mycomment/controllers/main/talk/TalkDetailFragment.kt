@@ -440,9 +440,9 @@ class TalkDetailFragment : BaseFragment() {
             BaseApplication.shared.getSharedPreferences().setPostTalkId(talk.id)
             BaseApplication.shared.getSharedPreferences().setTalk(talk)
 
-            constraintOverview.visibility = View.GONE
-            shimmerFrameLayout.visibility = View.VISIBLE
-            shimmerFrameLayout.startShimmer()
+            constraintOverview.visibility = View.VISIBLE
+            shimmerFrameLayout.visibility = View.GONE
+//            shimmerFrameLayout.startShimmer()
 
             when (BaseApplication.shared.getSharedPreferences().getLocale()) {
 
@@ -458,15 +458,15 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
 
-                                shimmerFrameLayout.stopShimmer()
-                                shimmerFrameLayout.visibility = View.GONE
-                                constraintOverview.visibility = View.VISIBLE
-                            }, 1000)
+//                                shimmerFrameLayout.stopShimmer()
+//                                shimmerFrameLayout.visibility = View.GONE
+//                                constraintOverview.visibility = View.VISIBLE
+                            }, 500)
 
                         }
                     } else {
-                        shimmerFrameLayout.stopShimmer()
-                        shimmerFrameLayout.visibility = View.GONE
+//                        shimmerFrameLayout.stopShimmer()
+//                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
                     }
                 }
@@ -483,15 +483,15 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
 
-                                shimmerFrameLayout.stopShimmer()
-                                shimmerFrameLayout.visibility = View.GONE
-                                constraintOverview.visibility = View.VISIBLE
-                            }, 1000)
+//                                shimmerFrameLayout.stopShimmer()
+//                                shimmerFrameLayout.visibility = View.GONE
+//                                constraintOverview.visibility = View.VISIBLE
+                            }, 500)
 
                         }
                     } else {
-                        shimmerFrameLayout.stopShimmer()
-                        shimmerFrameLayout.visibility = View.GONE
+//                        shimmerFrameLayout.stopShimmer()
+//                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
                     }
                 }
@@ -507,15 +507,15 @@ class TalkDetailFragment : BaseFragment() {
                                 talkDetailCastAdapter.notifyDataSetChanged()
                                 rvCast.setHasFixedSize(true)
 
-                                shimmerFrameLayout.stopShimmer()
-                                shimmerFrameLayout.visibility = View.GONE
-                                constraintOverview.visibility = View.VISIBLE
-                            }, 1000)
+//                                shimmerFrameLayout.stopShimmer()
+//                                shimmerFrameLayout.visibility = View.GONE
+//                                constraintOverview.visibility = View.VISIBLE
+                            }, 500)
 
                         }
                     } else {
-                        shimmerFrameLayout.stopShimmer()
-                        shimmerFrameLayout.visibility = View.GONE
+//                        shimmerFrameLayout.stopShimmer()
+//                        shimmerFrameLayout.visibility = View.GONE
                         constraintOverview.visibility = View.GONE
                     }
 

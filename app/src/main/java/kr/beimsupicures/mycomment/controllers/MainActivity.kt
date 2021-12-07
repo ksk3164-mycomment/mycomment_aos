@@ -32,6 +32,7 @@ import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
@@ -1056,11 +1057,13 @@ class MainActivity : BaseActivity() {
                 R.id.splashFragment, R.id.talkFragment -> {
                     if (System.currentTimeMillis() - mBackWait >= 2000) {
                         mBackWait = System.currentTimeMillis()
-                        Toast.makeText(
-                            this,
-                            getString(R.string.backpress_title),
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            this,
+//                            getString(R.string.backpress_title),
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+                        Snackbar.make(constraintLayout,getString(R.string.backpress_title),Snackbar.LENGTH_SHORT).show()
+
                     } else {
                         moveTaskToBack(true)
                         finishAffinity()

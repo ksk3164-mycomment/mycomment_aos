@@ -1,6 +1,7 @@
 package kr.beimsupicures.mycomment.extensions
 
 import android.content.SharedPreferences
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kr.beimsupicures.mycomment.api.models.FeedModel
 import kr.beimsupicures.mycomment.api.models.TalkModel
@@ -26,6 +27,10 @@ fun SharedPreferences.setTalk(value: TalkModel) {
         .commit()
 }
 
+fun SharedPreferences.setBlockUser(value: MutableList<String>) {
+    BaseApplication.shared.getSharedPreferences().edit().putString("blockUser", Gson().toJson(value))
+        .commit()
+}
 
 fun SharedPreferences.getUser(): UserModel? {
     BaseApplication.shared.getSharedPreferences().getString("user", null)?.let { value ->
@@ -53,6 +58,19 @@ fun SharedPreferences.getFeed(): FeedModel? {
         return null
     }
 }
+
+fun SharedPreferences.getBlockUser(): MutableList<String>? {
+    BaseApplication.shared.getSharedPreferences().getString("blockUser", null)?.let { value ->
+
+        val listType : TypeToken<MutableList<String>> = object : TypeToken<MutableList<String>>() {}
+
+        return Gson().fromJson<MutableList<String>>(value, listType.type)
+
+    } ?: run {
+        return null
+    }
+}
+
 
 fun SharedPreferences.setFeedDetailUserId(value: Int) {
     BaseApplication.shared.getSharedPreferences().edit().putInt("feedUserId", value).commit()

@@ -33,7 +33,7 @@ class TalkPopularAdapter(val activity: FragmentActivity?, var items: MutableList
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[holder.bindingAdapterPosition], holder.bindingAdapterPosition)
+        holder.bind(items[position], position)
     }
 
     inner class ViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

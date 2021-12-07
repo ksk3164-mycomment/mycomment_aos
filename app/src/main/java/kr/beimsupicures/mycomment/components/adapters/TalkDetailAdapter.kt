@@ -144,26 +144,7 @@ class TalkDetailAdapter(
                         if (viewModel.isMe) R.color.paleGrey else android.R.color.white
                     )
                 )
-                if (viewModel.owner.isActor()) {
-                    tvActorTalk.visibility = View.VISIBLE
-                    val layoutParams = profileLayout.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParams.setMargins(0, 8.dp, 0, 0)
-                    profileLayout.layoutParams = layoutParams
-                    replyLayout.visibility = View.GONE
-                    reportView.visibility = View.GONE
-                    blockView.visibility = View.GONE
-                    deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
-                } else {
-                    tvActorTalk.visibility = View.GONE
-                    val layoutParams = profileLayout.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParams.setMargins(0, 12.dp, 0, 0)
-                    profileLayout.layoutParams = layoutParams
-                    replyLayout.visibility = View.VISIBLE
-                    deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
-//                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
-                    blockView.visibility = View.GONE
-                    reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
-                }
+
             }
             likeCountLabel.text = "${viewModel.pick_count.currencyValue}"
 
@@ -260,79 +241,124 @@ class TalkDetailAdapter(
 
             contentLabel.text = viewModel.content
 
-
-//            contentLabel.setOnClickListener {
-//                val clipboardManager = activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//                val clip: ClipData = ClipData.newPlainText("simple text", viewModel.content)
-//                clipboardManager.setPrimaryClip(clip)
-//            }
-
             timelineLabel.text = viewModel.created_at.timeline(itemView.context)
             reportView.setOnClickListener { view ->
-                activity?.supportFragmentManager?.let { fragmentManager ->
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.supportFragmentManager?.let { fragmentManager ->
 
-                    ReportDialog(view.context, didSelectAt = { reason ->
-                        ReportLoader.shared.report(
-                            ReportModel.Category.comment,
-                            viewModel.id,
-                            reason
+                        ReportDialog(view.context, didSelectAt = { reason ->
+                            ReportLoader.shared.report(
+                                ReportModel.Category.comment,
+                                viewModel.id,
+                                reason
+                            ) {
+                                activity.alert(
+                                    activity.getString(R.string.report_complete_sub),
+                                    activity.getString(R.string.report_complete)
+                                ) { }
+                            }
+                        }).show(fragmentManager, "")
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
                         ) {
-                            activity.alert(
-                                activity.getString(R.string.report_complete_sub),
-                                activity.getString(R.string.report_complete)
-                            ) { }
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
                         }
-                    }).show(fragmentManager, "")
+                    }
                 }
             }
 
             blockView.setOnClickListener { view ->
-                activity?.let { activity ->
-                    activity.popup(
-                        activity.getString(R.string.Block_alert),
-                        activity.getString(R.string.Block_Comment)
-                    ) {
-                        items.removeAt(bindingAdapterPosition)
-                        notifyItemRemoved(bindingAdapterPosition)
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Block_popup_title),
+                            activity.getString(R.string.Block_Comment)
+                        ) {
+                            items.removeAt(bindingAdapterPosition)
+                            notifyItemRemoved(bindingAdapterPosition)
+                            val blockUser =
+                                BaseApplication.shared.getSharedPreferences().getBlockUser()
+                            if (blockUser == null) {
+
+                                val mutableList: MutableList<String> = mutableListOf()
+                                mutableList.add(viewModel.owner.id.toString())
+                                BaseApplication.shared.getSharedPreferences()
+                                    .setBlockUser(mutableList)
+
+                            } else {
+                                blockUser.add(viewModel.owner.id.toString())
+                                BaseApplication.shared.getSharedPreferences()
+                                    .setBlockUser(blockUser)
+                            }
+
+
+                        }
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
+                        }
                     }
                 }
             }
 
             deleteView.setOnClickListener { view ->
-                activity?.let { activity ->
-                    activity.popup(
-                        activity.getString(R.string.Delete_comment_sub),
-                        activity.getString(R.string.Delete_comment)
-                    ) {
-                        CommentLoader.shared.deleteComment(viewModel.id) { comment ->
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Delete_comment_sub),
+                            activity.getString(R.string.Delete_comment)
+                        ) {
+                            CommentLoader.shared.deleteComment(viewModel.id) { comment ->
 //                            CommentLoader.shared.getCommentCountTotal(viewModel.id) { total ->
-                            CommentLoader.shared.getCommentCount(talk.id) { count ->
+                                CommentLoader.shared.getCommentCount(talk.id) { count ->
 
-                                var mils = System.currentTimeMillis()
+                                    var mils = System.currentTimeMillis()
 
-                                // Write a message to the database
-                                val database = FirebaseDatabase.getInstance()
-                                val myRef = database.getReference("talk").child("${talk.id}")
-                                myRef.setValue(HashMap<String, String>().apply {
-                                    put("total", mils.toString())
-                                    put("count", mils.toString())
-                                })
-                                listOnclickInterface.onCheckBox(count)
+                                    // Write a message to the database
+                                    val database = FirebaseDatabase.getInstance()
+                                    val myRef = database.getReference("talk").child("${talk.id}")
+                                    myRef.setValue(HashMap<String, String>().apply {
+                                        put("total", mils.toString())
+                                        put("count", mils.toString())
+                                    })
+                                    listOnclickInterface.onCheckBox(count)
 
 
-                                activity.alert(
-                                    activity.getString(R.string.Delete_alert),
-                                    activity.getString(R.string.Notification)
-                                ) {
+                                    activity.alert(
+                                        activity.getString(R.string.Delete_alert),
+                                        activity.getString(R.string.Notification)
+                                    ) {
 
+                                    }
+                                    items.removeAt(bindingAdapterPosition)
+                                    notifyItemRemoved(bindingAdapterPosition)
+
+                                    val newValue = this@TalkDetailAdapter.items
+                                    CommentLoader.shared.items = newValue
                                 }
-                                items.removeAt(bindingAdapterPosition)
-                                notifyItemRemoved(bindingAdapterPosition)
-
-                                val newValue = this@TalkDetailAdapter.items
-                                CommentLoader.shared.items = newValue
-                            }
 //                            }
+                            }
+                        }
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
                         }
                     }
                 }
@@ -382,12 +408,57 @@ class TalkDetailAdapter(
                         )
                 }
             }
+            if (viewModel.owner.isActor()) {
+                tvActorTalk.visibility = View.VISIBLE
+                val layoutParams = profileLayout.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(0, 8.dp, 0, 0)
+                profileLayout.layoutParams = layoutParams
+                replyLayout.visibility = View.GONE
+                reportView.visibility = View.GONE
+                blockView.visibility = View.GONE
+                deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
+            } else {
+                tvActorTalk.visibility = View.GONE
+                val layoutParams = profileLayout.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(0, 12.dp, 0, 0)
+                profileLayout.layoutParams = layoutParams
+                replyLayout.visibility = View.VISIBLE
+                deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
+                blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+                reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+
+                if (viewModel.blockUser) {
+                    contentLabel.text = activity?.getString(R.string.Block_alert_user)
+                    blockView.visibility = View.GONE
+                    reportView.visibility = View.GONE
+                    likeView.visibility = View.GONE
+                    timelineLabel.visibility = View.GONE
+                    replyLayout.visibility = View.GONE
+                    profileView.setOnClickListener {
+                        activity?.alert(
+                            activity.getString(R.string.Block_alert_user),
+                            activity.getString(R.string.Notification)
+                        ) {}
+                    }
+                } else {
+                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+                    reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+                    likeView.visibility = View.VISIBLE
+                    timelineLabel.visibility = View.VISIBLE
+                    replyLayout.visibility = View.VISIBLE
+                    profileView.setOnClickListener {
+                        val action =
+                            NavigationDirections.actionGlobalProfileFragment(viewModel.owner.id)
+                        it.findNavController().navigate(action)
+                    }
+
+                }
+            }
+
         }
     }
 }
 
 interface list_onClick_interface {
-
     fun onCheckBox(friend_data: Int)
-
 }

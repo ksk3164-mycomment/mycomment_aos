@@ -162,8 +162,7 @@ class FeedDetailAdapter(
                     profileLayout.layoutParams = layoutParams
                     replyLayout.visibility = View.VISIBLE
                     deleteView.visibility = if (viewModel.isMe) View.VISIBLE else View.GONE
-//                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
-                    blockView.visibility = View.GONE
+                    blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
                     reportView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
                 }
             }
@@ -261,73 +260,107 @@ class FeedDetailAdapter(
             contentLabel.setTextIsSelectable(true)
             contentLabel.text = viewModel.content
 
-
             timelineLabel.text = "${viewModel.created_at.timeline(itemView.context)}"
             reportView.setOnClickListener { view ->
-                activity?.supportFragmentManager?.let { fragmentManager ->
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.supportFragmentManager?.let { fragmentManager ->
 
-                    ReportDialog(view.context, didSelectAt = { reason ->
-                        ReportLoader.shared.report(
-                            ReportModel.Category.fcomment,
-                            viewModel.id,
-                            reason
+                        ReportDialog(view.context, didSelectAt = { reason ->
+                            ReportLoader.shared.report(
+                                ReportModel.Category.fcomment,
+                                viewModel.id,
+                                reason
+                            ) {
+                                activity.alert(
+                                    activity.getString(R.string.report_complete_sub),
+                                    activity.getString(R.string.report_complete)
+                                ) { }
+                            }
+                        }).show(fragmentManager, "")
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
                         ) {
-                            activity.alert(
-                                activity.getString(R.string.report_complete_sub),
-                                activity.getString(R.string.report_complete)
-                            ) { }
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
                         }
-                    }).show(fragmentManager, "")
-                }
-            }
-//            blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
-            blockView.visibility = View.GONE
-            blockView.setOnClickListener { view ->
-                activity?.let { activity ->
-                    activity.popup(
-                        activity.getString(R.string.Block_alert),
-                        activity.getString(R.string.Block_Comment)
-                    ) {
-                        items.removeAt(position)
-                        notifyDataSetChanged()
                     }
                 }
             }
-
-            deleteView.setOnClickListener { view ->
-                activity?.let { activity ->
-                    activity.popup(
-                        activity.getString(R.string.Delete_comment_sub),
-                        activity.getString(R.string.Delete_comment)
-                    ) {
-                        FeedCommentLoader.shared.deleteFeedComment(viewModel.id) { comment ->
-
+            blockView.visibility = if (!viewModel.isMe) View.VISIBLE else View.GONE
+            blockView.setOnClickListener { view ->
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Block_alert),
+                            activity.getString(R.string.Block_Comment)
+                        ) {
+                            items.removeAt(position)
+                            notifyDataSetChanged()
                         }
-                        FeedCommentLoader.shared.getFeedCommentCount(feed.feed_seq) { count ->
+                    }
 
-                            var mils = System.currentTimeMillis()
-
-                            // Write a message to the database
-                            val database = FirebaseDatabase.getInstance()
-                            val myRef = database.getReference("feed").child("${feed.feed_seq}")
-                            myRef.setValue(HashMap<String, String>().apply {
-                                put("total", mils.toString())
-                                put("count", mils.toString())
-                            })
-                            onclickInterface.onClick(count)
-
-                            activity.alert(
-                                activity.getString(R.string.Delete_alert),
-                                activity.getString(R.string.Notification)
-                            ) {
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
+                        }
+                    }
+                }
+            }
+            deleteView.setOnClickListener { view ->
+                BaseApplication.shared.getSharedPreferences().getUser()?.let {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Delete_comment_sub),
+                            activity.getString(R.string.Delete_comment)
+                        ) {
+                            FeedCommentLoader.shared.deleteFeedComment(viewModel.id) { comment ->
 
                             }
+                            FeedCommentLoader.shared.getFeedCommentCount(feed.feed_seq) { count ->
 
-                            items.removeAt(bindingAdapterPosition)
-                            notifyItemRemoved(bindingAdapterPosition)
+                                var mils = System.currentTimeMillis()
 
-                            val newValue = this@FeedDetailAdapter.items
-                            FeedCommentLoader.shared.items = newValue
+                                // Write a message to the database
+                                val database = FirebaseDatabase.getInstance()
+                                val myRef = database.getReference("feed").child("${feed.feed_seq}")
+                                myRef.setValue(HashMap<String, String>().apply {
+                                    put("total", mils.toString())
+                                    put("count", mils.toString())
+                                })
+                                onclickInterface.onClick(count)
+
+                                activity.alert(
+                                    activity.getString(R.string.Delete_alert),
+                                    activity.getString(R.string.Notification)
+                                ) {
+
+                                }
+
+                                items.removeAt(bindingAdapterPosition)
+                                notifyItemRemoved(bindingAdapterPosition)
+
+                                val newValue = this@FeedDetailAdapter.items
+                                FeedCommentLoader.shared.items = newValue
+                            }
+                        }
+                    }
+                } ?: run {
+                    activity?.let { activity ->
+                        activity.popup(
+                            activity.getString(R.string.Doyouwantlogin),
+                            activity.getString(R.string.Login)
+                        ) {
+                            Navigation.findNavController(activity, R.id.nav_host_fragment)
+                                .navigate(R.id.action_global_signInFragment)
                         }
                     }
                 }
@@ -376,6 +409,32 @@ class FeedDetailAdapter(
                         )
                 }
             }
+            if (viewModel.blockUser) {
+                contentLabel.text = activity?.getString(R.string.Block_alert_user)
+                blockView.visibility = View.GONE
+                reportView.visibility = View.GONE
+                likeView.visibility = View.GONE
+                timelineLabel.visibility = View.GONE
+                replyLayout.visibility = View.GONE
+                profileView.setOnClickListener {
+                    activity?.alert(
+                        activity.getString(R.string.Block_alert_user),
+                        activity.getString(R.string.Notification)
+                    ) {}
+                }
+            } else {
+                blockView.visibility = View.VISIBLE
+                reportView.visibility = View.VISIBLE
+                likeView.visibility = View.VISIBLE
+                timelineLabel.visibility = View.VISIBLE
+                replyLayout.visibility = View.VISIBLE
+                profileView.setOnClickListener {
+                    val action =
+                        NavigationDirections.actionGlobalProfileFragment(viewModel.owner.id)
+                    it.findNavController().navigate(action)
+                }
+            }
+
         }
     }
 }
