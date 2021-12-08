@@ -47,6 +47,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_drama_feed_detail.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kr.beimsupicures.mycomment.NavigationDirections
 import kr.beimsupicures.mycomment.R
 import kr.beimsupicures.mycomment.api.AmazonS3Loader
@@ -71,11 +75,13 @@ import kr.beimsupicures.mycomment.controllers.main.talk.*
 import kr.beimsupicures.mycomment.controllers.signs.SignInFragment
 import kr.beimsupicures.mycomment.controllers.signs.sign
 import kr.beimsupicures.mycomment.extensions.*
+import kr.beimsupicures.mycomment.extensions.Constants.TAG
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : BaseActivity() {
@@ -107,6 +113,11 @@ class MainActivity : BaseActivity() {
 
     //뒤로가기 연속 클릭 대기 시간
     var mBackWait: Long = 0
+
+    private var myCoroutineJob: Job = Job()
+    private val myCoroutineContext: CoroutineContext
+        get() = Dispatchers.IO + myCoroutineJob
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -482,37 +493,70 @@ class MainActivity : BaseActivity() {
         toolbar.btnClose.setOnClickListener {
             onBackPressed()
         }
-        toolbar.searchView.searchField.textChanges()
-            .map(CharSequence::toString)
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { keyword ->
-                Log.e("keyword", "${keyword}")
+//        toolbar.searchView.searchField.textChanges()
+//            .map(CharSequence::toString)
+//            .debounce(500, TimeUnit.MILLISECONDS)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { keyword ->
+//                Log.e("keyword", "${keyword}")
+//
+//                supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+//                    ?.childFragmentManager?.fragments?.get(0)?.let { fragment ->
+//                        when (fragment) {
+//                            is SearchTalkFragment -> {
+//
+////                                if (!keyword.isNullOrBlank()) {
+//
+//                                SearchLoader.shared.searchTalk(
+//                                    keyword.replace(
+//                                        " ",
+//                                        ""
+//                                    )
+//                                ) { talk ->
+//                                    fragment.talk = talk
+//                                    fragment.resultAdapter.items = fragment.talk
+//                                    fragment.resultAdapter.notifyDataSetChanged()
+//                                }
+//
+////                                }
+//
+//                            }
+//                        }
+//                    }
+//            }
 
-                supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-                    ?.childFragmentManager?.fragments?.get(0)?.let { fragment ->
-                        when (fragment) {
-                            is SearchTalkFragment -> {
+        GlobalScope.launch(context = myCoroutineContext) {
+            toolbar.searchView.searchField.textChangesToFlow()
+                .debounce(1000)
+                .onEach { keyword ->
+                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                        ?.childFragmentManager?.fragments?.get(0)?.let { fragment ->
+                            when (fragment) {
+                                is SearchTalkFragment -> {
 
 //                                if (!keyword.isNullOrBlank()) {
 
-                                SearchLoader.shared.searchTalk(
-                                    keyword.replace(
-                                        " ",
-                                        ""
-                                    )
-                                ) { talk ->
-                                    fragment.talk = talk
-                                    fragment.resultAdapter.items = fragment.talk
-                                    fragment.resultAdapter.notifyDataSetChanged()
-                                }
+                                    SearchLoader.shared.searchTalk(
+                                        keyword.toString().replace(
+                                            " ",
+                                            ""
+                                        )
+                                    ) { talk ->
+                                        fragment.talk = talk
+                                        fragment.resultAdapter.items = fragment.talk
+                                        fragment.resultAdapter.notifyDataSetChanged()
+                                    }
 
 //                                }
 
+                                }
                             }
                         }
-                    }
-            }
+                }.launchIn(this)
+
+        }
+
+
 
         toolbar.btnWrite.setOnClickListener {
             BaseApplication.shared.getSharedPreferences().getUser()?.let { user ->
@@ -530,11 +574,13 @@ class MainActivity : BaseActivity() {
                                 getString(R.string.feed_write_alert_sub),
                                 getString(R.string.feed_write_alert_title)
                             ) {
-                                BaseApplication.shared.getSharedPreferences().getPostTalkId()
+                                BaseApplication.shared.getSharedPreferences()
+                                    .getPostTalkId()
                                     ?.let { talk_id ->
                                         var editor = fragment.editorText.toString()
 
-                                        val displayMetrics = this.resources?.displayMetrics
+                                        val displayMetrics =
+                                            this.resources?.displayMetrics
                                         val dpWidth =
                                             displayMetrics!!.widthPixels / displayMetrics.density
 
@@ -553,7 +599,10 @@ class MainActivity : BaseActivity() {
                                                 "content"
                                             )
                                         }
-                                        Log.e("tjdrnr", "subparts size= " + subparts.size)
+                                        Log.e(
+                                            "tjdrnr",
+                                            "subparts size= " + subparts.size
+                                        )
                                         //이미지가 없다
                                         if (subparts.isEmpty()) {
                                             FeedLoader.shared.putFeed(
@@ -604,12 +653,16 @@ class MainActivity : BaseActivity() {
                                             //이미지가 있다
                                             if (subparts.size <= 8) {
                                                 //이미지 개수 8개 이하일때
-                                                Log.e("tjdrnr", "Substring parts= " + parts)
+                                                Log.e(
+                                                    "tjdrnr",
+                                                    "Substring parts= " + parts
+                                                )
 
                                                 var urlList = mutableListOf<String>()
                                                 for (item in parts.indices) {
                                                     if (parts[item].startsWith("file://")) {
-                                                        val name = "${UUID.randomUUID()}"
+                                                        val name =
+                                                            "${UUID.randomUUID()}"
                                                         parts[item] =
                                                             "<img src =\"$s3Url$name\" alt=\"\">"
                                                         urlList.add("$s3Url$name")
@@ -617,7 +670,9 @@ class MainActivity : BaseActivity() {
                                                 }
                                                 Log.e(
                                                     "tjdrnr",
-                                                    "parts.toString = " + parts.joinToString("")
+                                                    "parts.toString = " + parts.joinToString(
+                                                        ""
+                                                    )
                                                 )
                                                 Log.e("tjdrnr", "urlList= " + urlList)
 
@@ -627,9 +682,14 @@ class MainActivity : BaseActivity() {
                                                     AmazonS3Loader.shared.uploadImage3(
                                                         "feed",
                                                         subparts[item].toUri(),
-                                                        urlList[item].substringAfter(s3Url)
+                                                        urlList[item].substringAfter(
+                                                            s3Url
+                                                        )
                                                     ) {
-                                                        Log.e("tjdrnr", "s3 url = " + it)
+                                                        Log.e(
+                                                            "tjdrnr",
+                                                            "s3 url = " + it
+                                                        )
                                                         if (item == urlList.size - 1) {
                                                             Log.e("tjdrnr", "마지막")
 //                                                        var images =
@@ -759,7 +819,9 @@ class MainActivity : BaseActivity() {
                                                                                     this,
                                                                                     R.id.nav_host_fragment
                                                                                 )
-                                                                                    .navigate(action)
+                                                                                    .navigate(
+                                                                                        action
+                                                                                    )
 
                                                                                 loadingDialog.dismiss()
                                                                             },
@@ -831,13 +893,16 @@ class MainActivity : BaseActivity() {
                                 )
                             }
                             val imgparts = parts.filter {
-                                it.startsWith("http") || it.startsWith("file") || it.startsWith("content")
+                                it.startsWith("http") || it.startsWith("file") || it.startsWith(
+                                    "content"
+                                )
                             }
 
                             if (subparts.isEmpty()) {
                                 //새로 넣은 이미지 없음
                                 var feed_seq =
-                                    BaseApplication.shared.getSharedPreferences().getFeedId()
+                                    BaseApplication.shared.getSharedPreferences()
+                                        .getFeedId()
                                 FeedLoader.shared.editFeed(feed_seq, title, editor) {
                                     Navigation.findNavController(
                                         fragment.requireView()
@@ -894,22 +959,25 @@ class MainActivity : BaseActivity() {
                                                     title,
                                                     parts.joinToString("")
                                                 ) {
-                                                    Handler(Looper.getMainLooper()).postDelayed({
-                                                        Navigation.findNavController(
-                                                            fragment.requireView()
-                                                        )
-                                                            .popBackStack(
-                                                                R.id.dramaFeedModifyFragment,
-                                                                false
+                                                    Handler(Looper.getMainLooper()).postDelayed(
+                                                        {
+                                                            Navigation.findNavController(
+                                                                fragment.requireView()
                                                             )
-                                                        Navigation.findNavController(
-                                                            fragment.requireView()
-                                                        )
-                                                            .popBackStack()
+                                                                .popBackStack(
+                                                                    R.id.dramaFeedModifyFragment,
+                                                                    false
+                                                                )
+                                                            Navigation.findNavController(
+                                                                fragment.requireView()
+                                                            )
+                                                                .popBackStack()
 
-                                                        loadingDialog.dismiss()
+                                                            loadingDialog.dismiss()
 
-                                                    }, 4000)
+                                                        },
+                                                        4000
+                                                    )
                                                 }
                                             }
                                         }
@@ -950,24 +1018,25 @@ class MainActivity : BaseActivity() {
                 (supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.firstOrNull() as DramaFeedDetailFragment).let { fragment ->
                     loadingDialog = LoadingDialog(this)
                     loadingDialog.show()
-                    val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                        .setLink("https://mycomment.kr/feed/?seq=${fragment.feedDetail?.feed_seq}".toUri()) //정보를 담는 json 사이트를 넣자!!
-                        .setDomainUriPrefix("https://mycomment.page.link/")
-                        .setAndroidParameters(
-                            DynamicLink.AndroidParameters.Builder(this.packageName.toString())
-                                .build()
-                        )
-                        .setIosParameters(
-                            DynamicLink.IosParameters.Builder("kr.beimsupicures.mycomment")
-                                .setAppStoreId("1492390423")
-                                .build()
-                        )
-                        .setNavigationInfoParameters(
-                            DynamicLink.NavigationInfoParameters.Builder()
-                                .setForcedRedirectEnabled(true)
-                                .build()
-                        )
-                        .buildDynamicLink()
+                    val dynamicLink =
+                        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                            .setLink("https://mycomment.kr/feed/?seq=${fragment.feedDetail?.feed_seq}".toUri()) //정보를 담는 json 사이트를 넣자!!
+                            .setDomainUriPrefix("https://mycomment.page.link/")
+                            .setAndroidParameters(
+                                DynamicLink.AndroidParameters.Builder(this.packageName.toString())
+                                    .build()
+                            )
+                            .setIosParameters(
+                                DynamicLink.IosParameters.Builder("kr.beimsupicures.mycomment")
+                                    .setAppStoreId("1492390423")
+                                    .build()
+                            )
+                            .setNavigationInfoParameters(
+                                DynamicLink.NavigationInfoParameters.Builder()
+                                    .setForcedRedirectEnabled(true)
+                                    .build()
+                            )
+                            .buildDynamicLink()
                     val dylinkuri = dynamicLink.uri //긴 URI
                     Log.e("tjdrnr", "long uri : $dylinkuri")
                     //짧은 URI사용
@@ -980,7 +1049,10 @@ class MainActivity : BaseActivity() {
                                 val shortLink: Uri? = task.result?.shortLink
                                 val flowchartLink: Uri? = task.result?.previewLink
                                 Log.e("tjdrnr", "short uri : $shortLink") //짧은 URI
-                                Log.e("tjdrnr", "flowchartLink uri : $flowchartLink") //짧은 URI
+                                Log.e(
+                                    "tjdrnr",
+                                    "flowchartLink uri : $flowchartLink"
+                                ) //짧은 URI
                                 try {
                                     val intent = Intent(Intent.ACTION_SEND)
                                     intent.type = "text/plain"
@@ -1020,8 +1092,18 @@ class MainActivity : BaseActivity() {
 //                                .navigate(action)
                         onBackPressed()
 
-                        tv_original.setTextColor(ContextCompat.getColor(this, R.color.colorGrey))
-                        tv_home.setTextColor(ContextCompat.getColor(this, R.color.black))
+                        tv_original.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.colorGrey
+                            )
+                        )
+                        tv_home.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.black
+                            )
+                        )
                         ivHome.setImageResource(R.drawable.ic_chat_on)
                         ivOriginal.setImageResource(R.drawable.ic_original_off)
 //                        }
@@ -1041,8 +1123,18 @@ class MainActivity : BaseActivity() {
                             NavigationDirections.actionGlobalOriginalFragment()
                         Navigation.findNavController(this, R.id.nav_host_fragment)
                             .navigate(action)
-                        tv_original.setTextColor(ContextCompat.getColor(this, R.color.black))
-                        tv_home.setTextColor(ContextCompat.getColor(this, R.color.colorGrey))
+                        tv_original.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.black
+                            )
+                        )
+                        tv_home.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.colorGrey
+                            )
+                        )
                         ivHome.setImageResource(R.drawable.ic_chat_off)
                         ivOriginal.setImageResource(R.drawable.ic_original)
                     }
@@ -1082,7 +1174,12 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.originalFragment -> {
                     bottom_nav.selectedItemId = R.id.page_talk
-                    tv_original.setTextColor(ContextCompat.getColor(this, R.color.colorGrey))
+                    tv_original.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.colorGrey
+                        )
+                    )
                     tv_home.setTextColor(ContextCompat.getColor(this, R.color.black))
                     ivHome.setImageResource(R.drawable.ic_chat_on)
                     ivOriginal.setImageResource(R.drawable.ic_original_off)
@@ -1185,7 +1282,8 @@ class MainActivity : BaseActivity() {
                                         fragment.layoutVolume.visibility = View.VISIBLE
 
                                         Handler(Looper.getMainLooper()).postDelayed({
-                                            fragment.layoutVolume.visibility = View.INVISIBLE
+                                            fragment.layoutVolume.visibility =
+                                                View.INVISIBLE
                                         }, 3000)
                                     }
                                 }
@@ -1218,7 +1316,8 @@ class MainActivity : BaseActivity() {
                                         fragment.layoutVolume.visibility = View.VISIBLE
 
                                         Handler(Looper.getMainLooper()).postDelayed({
-                                            fragment.layoutVolume.visibility = View.INVISIBLE
+                                            fragment.layoutVolume.visibility =
+                                                View.INVISIBLE
                                         }, 3000)
                                     }
                                 }
@@ -1242,8 +1341,10 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        myCoroutineContext.cancel()
         super.onDestroy()
-        BaseApplication.shared.getSharedPreferences().edit().putBoolean("noticeTF", false).apply()
+        BaseApplication.shared.getSharedPreferences().edit().putBoolean("noticeTF", false)
+            .apply()
     }
 
     fun initNavigationBar() {
@@ -1256,7 +1357,8 @@ class MainActivity : BaseActivity() {
                             R.id.talkFragment -> {}
 
                             else -> {
-                                val action = NavigationDirections.actionGlobalTalkFragment2(null)
+                                val action =
+                                    NavigationDirections.actionGlobalTalkFragment2(null)
                                 Navigation.findNavController(this, R.id.nav_host_fragment)
                                     .navigate(action)
                             }
@@ -1271,7 +1373,8 @@ class MainActivity : BaseActivity() {
                             R.id.originalFragment -> {}
 
                             else -> {
-                                val action = NavigationDirections.actionGlobalOriginalFragment()
+                                val action =
+                                    NavigationDirections.actionGlobalOriginalFragment()
                                 Navigation.findNavController(this, R.id.nav_host_fragment)
                                     .navigate(action)
                             }
@@ -1290,8 +1393,13 @@ class MainActivity : BaseActivity() {
 
                                 else -> {
                                     val action =
-                                        NavigationDirections.actionGlobalProfileFragment(user.id)
-                                    Navigation.findNavController(this, R.id.nav_host_fragment)
+                                        NavigationDirections.actionGlobalProfileFragment(
+                                            user.id
+                                        )
+                                    Navigation.findNavController(
+                                        this,
+                                        R.id.nav_host_fragment
+                                    )
                                         .navigate(action)
                                 }
                             }
